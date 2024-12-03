@@ -25,17 +25,11 @@ public class Session {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public Instructor getInstructor() {
         return instructor;
     }
 
-    public void setInstructor(Instructor instructor) {
-        this.instructor = instructor;
-    }
+
 
     public boolean hasPast() {
         LocalDateTime currentDateTime = LocalDateTime.now();
@@ -59,6 +53,4 @@ public class Session {
 
         return yearRemainder > 0 && monthRemainder > 0 && dayRemainder > 0 && hourRemainder > 0 && minutesRemainder > 0;
     }
-
-
 }

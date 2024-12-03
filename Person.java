@@ -2,7 +2,7 @@ import java.time.*;
 
 public class Person {
     private final String name;
-    private int balance;
+    protected int balance;
     private final Gender gender;
     private final String birthDate;
 
@@ -32,7 +32,7 @@ public class Person {
         return balance;
     }
 
-    public void substuctFromBalance(int amount) {
+    public void subtractFromBalance(int amount) {
         this.balance -= amount;
     }
 
@@ -60,7 +60,6 @@ public class Person {
         else return yearRemainder == 18 && monthRemainder >= 0 && dayRemainder >= 0;
     }
 
-
     public boolean isSenior(){
         LocalDateTime currentDateTime = LocalDateTime.now();
         int currYear = currentDateTime.getYear();
@@ -80,5 +79,4 @@ public class Person {
 
         else return yearRemainder == 65  && monthRemainder >= 0 && dayRemainder >= 0;
     }
-
 }
