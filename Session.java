@@ -29,8 +29,6 @@ public class Session {
         return instructor;
     }
 
-
-
     public boolean hasPast() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         int currYear = currentDateTime.getYear();

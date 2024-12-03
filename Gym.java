@@ -25,12 +25,12 @@ public class Gym {
     }
 
     public void setSecretary(Person secretary, int salary){
-        if (secretary instanceof Secretary) {
+        if (secretary instanceof Secretary) { // BADDDD!!! CHANGE IT!!!!!
             this.secretary = (Secretary) secretary;
         }
         else {
             this.secretary = new Secretary(secretary.getName(), secretary.getBalance(), secretary.getGender(), secretary.getBirthDate());
-            this.secretary.getActionPrints().add("A new secretary has started working at the gym: "+this.secretary.getName());
+            this.secretary.getActionPrints().add("A new secretary has started working at the gym: " + this.secretary.getName());
         }
 
         setSalary(salary);

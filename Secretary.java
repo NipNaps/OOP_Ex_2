@@ -29,6 +29,7 @@ public class Secretary extends Person implements Manageable {
             Client client = new Client(person);
             this.clientList.add(client);
             this.messageMap.put(client, new Stack<>());
+            this.actionPrints.add("Registered new client: " + client.getName());
             return client;
         } else {
             throw new InvalidAgeException("Error: Client must be at least 18 years old to register");
@@ -37,24 +38,26 @@ public class Secretary extends Person implements Manageable {
 
     @Override
     public void unregisterClient(Client client) throws ClientNotRegisteredException {
-        if (!this.clientList.remove(client))
+        boolean wasRemoved = this.clientList.remove(client);
+
+        if (wasRemoved) {
+            this.messageMap.remove(client, this.messageMap.get(client));
+            this.actionPrints.add("Unregistered client: " + client.getName());
+        }
+
+        else
             throw new ClientNotRegisteredException("Error: Registration is required before attempting to unregister");
     }
 
     @Override
     public Instructor hireInstructor(Person person, int hourSalary, ArrayList<SessionType> sessionList) {
-        Instructor potential = new Instructor(person, hourSalary, sessionList);
+        Instructor potential = InstructorFactory.createInstructor(person, hourSalary, sessionList);
         instructorsList.add(potential);
         return potential;
     }
 
     @Override
     public Session addSession(SessionType sessionType, String date, ForumType forumType, Instructor instructor) throws InstructorNotQualifiedException {
-        if (!instructor.getSessionList().contains(sessionType)) {
-            throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
-
-        }
-
         boolean sessionNotRegistered = true;
         for (Session session : this.sessionMap.keySet()) {
             if (session.getSessionType().equals(sessionType) && session.getDate().equals(date) && session.getForumType().equals(forumType) && session.getInstructor().equals(instructor)) {
@@ -65,7 +68,7 @@ public class Secretary extends Person implements Manageable {
 
         Session session = null;
         if (sessionNotRegistered && this.instructorsList.contains(instructor)) {
-             session = new Session(sessionType, date, forumType, instructor);
+            session = SessionFactory.createSession(sessionType, date, forumType, instructor);
             this.sessionMap.put(session, new ArrayList<>());
         }
 
@@ -117,6 +120,10 @@ public class Secretary extends Person implements Manageable {
         c1.subtractFromBalance(sessionPrice);
         Gym gym = Gym.getInstance();
         gym.addToGymBalance(sessionPrice);
+    }
+
+    public void unRegisterClientToLesson(Client c1, Session s1) {
+
     }
 
     public void notify(Session s1, String message) {
