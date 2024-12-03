@@ -4,7 +4,7 @@ public class Gym {
     private Secretary secretary;
     private int gymBalance;
 
-    private Gym(){};
+    private Gym(){}
 
     public static Gym getInstance(){
         return gym;
@@ -36,7 +36,11 @@ public class Gym {
         return gymBalance;
     }
 
-    public void setGymBalance(int gymBalance) {
-        this.gymBalance = gymBalance;
+    public void addToGymBalance(int amount) {
+        this.gymBalance += amount;
+    }
+
+    public void substuctFromGymBalance(int amount) {
+        this.gymBalance -= amount;
     }
 }
