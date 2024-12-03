@@ -1,20 +1,21 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
-public class Secretary extends Person implements SalarySetterSec , Manageable {
+public class Secretary extends Person implements Manageable {
     private final ArrayList<Client> clientList = new ArrayList<>();
+    private final ArrayList<Instructor> instructorsList = new ArrayList<>();
     private final HashMap<Session, ArrayList<Client>> sessionMap = new HashMap<>();
     private final HashMap<Client , Stack<String>> messageMap = new HashMap<>();
+    private final Queue<String> actionPrints = new LinkedList<>();
 
     public Secretary(String name, int balance, Gender gender, String birthDate) {
         super(name, balance, gender, birthDate);
+
     }
 
-    @Override
-    public void setSalary(int balance) {
-        this.balance = balance;
+    public Queue<String> getActionPrints() {
+        return actionPrints;
     }
+
     @Override
     public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
 
@@ -33,15 +34,20 @@ public class Secretary extends Person implements SalarySetterSec , Manageable {
             throw new InvalidAgeException("Error: Client must be at least 18 years old to register");
         }
     }
+
     @Override
     public void unregisterClient(Client client) throws ClientNotRegisteredException {
         if (!this.clientList.remove(client))
             throw new ClientNotRegisteredException("Error: Registration is required before attempting to unregister");
     }
+
     @Override
     public Instructor hireInstructor(Person person, int hourSalary, ArrayList<SessionType> sessionList) {
-        return new Instructor(person, hourSalary, sessionList);
+        Instructor potential = new Instructor(person, hourSalary, sessionList);
+        instructorsList.add(potential);
+        return potential;
     }
+
     @Override
     public Session addSession(SessionType sessionType, String date, ForumType forumType, Instructor instructor) throws InstructorNotQualifiedException {
         if (!instructor.getSessionList().contains(sessionType)) {
@@ -58,13 +64,14 @@ public class Secretary extends Person implements SalarySetterSec , Manageable {
         }
 
         Session session = null;
-        if (sessionNotRegistered) {
+        if (sessionNotRegistered && this.instructorsList.contains(instructor)) {
              session = new Session(sessionType, date, forumType, instructor);
             this.sessionMap.put(session, new ArrayList<>());
         }
 
         return session;
     }
+
     @Override
     public void registerClientToLesson(Client c1, Session s1) throws DuplicateClientException, ClientNotRegisteredException {
         if (!this.sessionMap.containsKey(s1)) {
@@ -107,7 +114,7 @@ public class Secretary extends Person implements SalarySetterSec , Manageable {
             }
         }
 
-        c1.substuctFromBalance(sessionPrice);
+        c1.subtractFromBalance(sessionPrice);
         Gym gym = Gym.getInstance();
         gym.addToGymBalance(sessionPrice);
     }
@@ -133,4 +140,22 @@ public class Secretary extends Person implements SalarySetterSec , Manageable {
         for (Client client : this.messageMap.keySet())
             this.messageMap.get(client).push(message);
     }
+
+    public void paySalaries() {
+        Gym gym = Gym.getInstance();
+        this.balance += gym.getSecretarySalary();
+        gym.subtractFromGymBalance(gym.getSecretarySalary());
+
+        for (Instructor instructor : this.instructorsList) {
+            instructor.balance += instructor.getHourSalary();
+            gym.subtractFromGymBalance(instructor.getHourSalary());
+        }
+    }
+
+    public void printActions() {
+
+    }
+
+
+
 }

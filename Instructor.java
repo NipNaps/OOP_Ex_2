@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Instructor extends Person{
+public class Instructor extends Person {
     private int hourSalary;
     private ArrayList<SessionType> sessionList;
 
@@ -15,15 +15,7 @@ public class Instructor extends Person{
         return hourSalary;
     }
 
-    public void setHourSalary(int hourSalary) {
-        this.hourSalary = hourSalary;
-    }
-
     public ArrayList<SessionType> getSessionList() {
         return sessionList;
-    }
-
-    public void setSessionList(ArrayList<SessionType> sessionList) {
-        this.sessionList = sessionList;
     }
 }
