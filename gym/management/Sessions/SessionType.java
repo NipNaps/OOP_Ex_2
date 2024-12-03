@@ -1,3 +1,5 @@
+package gym.management.Sessions;
+
 public enum SessionType {
     ThaiBoxing( 100, 20),
     MachinePilates( 80,10),

@@ -1,10 +1,13 @@
+package gym.management;
+import gym.Gym;
+import gym.customers.*;
+import gym.Exception.*;
+import gym.management.Sessions.*;
+
 import java.util.*;
 
 public class Secretary extends Person implements Manageable {
-    private final ArrayList<Client> clientList = new ArrayList<>();
-    private final ArrayList<Instructor> instructorsList = new ArrayList<>();
-    private final HashMap<Session, ArrayList<Client>> sessionMap = new HashMap<>();
-    private final HashMap<Client , Stack<String>> messageMap = new HashMap<>();
+    private final HashMap<Client , Stack<String>> messageMap = new HashMap<>(); // maybe use registry and factory instead?
     private final Queue<String> actionPrints = new LinkedList<>();
 
     public Secretary(String name, int balance, Gender gender, String birthDate) {
@@ -18,65 +21,63 @@ public class Secretary extends Person implements Manageable {
 
     @Override
     public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
+        if (!isCurrentSecretary())
+            return null;
 
-        for (Client existingClient : this.clientList) {
-            if (existingClient.getName().equals(person.getName()) && existingClient.getBirthDate().equals(person.getBirthDate())) {
-                throw new DuplicateClientException("Error: Registration is required before attempting to unregister");
-            }
-        }
+        Client newClient = ClientFactory.createClient(person);
+        ClientRegistry.getInstance().addClient(newClient);
+        actionPrints.add("Registered new client: " + person.getName());
 
-        if (person.isAboveEightTeen()) {
-            Client client = new Client(person);
-            this.clientList.add(client);
-            this.messageMap.put(client, new Stack<>());
-            this.actionPrints.add("Registered new client: " + client.getName());
-            return client;
-        } else {
-            throw new InvalidAgeException("Error: Client must be at least 18 years old to register");
-        }
+        return newClient;
     }
 
     @Override
-    public void unregisterClient(Client client) throws ClientNotRegisteredException {
-        boolean wasRemoved = this.clientList.remove(client);
+    public void unregisterClient(Client client) throws ClientNotRegisteredException { // need to remove from every session and so as well.
+        if (!isCurrentSecretary())
+            return;
 
-        if (wasRemoved) {
-            this.messageMap.remove(client, this.messageMap.get(client));
-            this.actionPrints.add("Unregistered client: " + client.getName());
-        }
-
-        else
+        if (!ClientRegistry.getInstance().isClientRegistered(client))
             throw new ClientNotRegisteredException("Error: Registration is required before attempting to unregister");
+
+        ClientRegistry.getInstance().removeClient(client);
+        this.actionPrints.add("Unregistered client: " + client.getName());
     }
 
     @Override
     public Instructor hireInstructor(Person person, int hourSalary, ArrayList<SessionType> sessionList) {
-        Instructor potential = InstructorFactory.createInstructor(person, hourSalary, sessionList);
-        instructorsList.add(potential);
-        return potential;
+        if (!isCurrentSecretary())
+            return null;
+
+        Instructor instructor = InstructorFactory.createInstructor(person, hourSalary, sessionList);
+        if (!InstructorRegistry.getInstance().isInstructorRegistered(instructor)) {
+            InstructorRegistry.getInstance().addInstructor(instructor);
+            actionPrints.add("Hired new instructor: " + person.getName() + " with salary per hour: " + hourSalary);
+            return instructor;
+        }
+
+        return  null;
     }
 
     @Override
     public Session addSession(SessionType sessionType, String date, ForumType forumType, Instructor instructor) throws InstructorNotQualifiedException {
-        boolean sessionNotRegistered = true;
-        for (Session session : this.sessionMap.keySet()) {
-            if (session.getSessionType().equals(sessionType) && session.getDate().equals(date) && session.getForumType().equals(forumType) && session.getInstructor().equals(instructor)) {
-                sessionNotRegistered = false;
-                break;
-            }
+        if (!isCurrentSecretary())
+            return null;
+
+        Session session = SessionFactory.createSession(sessionType, date, forumType, instructor);
+        if (!SessionRegistry.getInstance().isSessionRegistered(session)) {
+            SessionRegistry.getInstance().addSession(session);
+            actionPrints.add("Created new session: " + sessionType + " on " + date + " with instructor: " + instructor);
+            return session;
         }
 
-        Session session = null;
-        if (sessionNotRegistered && this.instructorsList.contains(instructor)) {
-            session = SessionFactory.createSession(sessionType, date, forumType, instructor);
-            this.sessionMap.put(session, new ArrayList<>());
-        }
-
-        return session;
+        return null;
     }
 
     @Override
-    public void registerClientToLesson(Client c1, Session s1) throws DuplicateClientException, ClientNotRegisteredException {
+    public void registerClientToLesson(Client c1, Session s1) throws DuplicateClientException, ClientNotRegisteredException, NullPointerException {
+        if (!isCurrentSecretary())
+            throw new NullPointerException();
+
         if (!this.sessionMap.containsKey(s1)) {
             return;
         }
@@ -163,6 +164,7 @@ public class Secretary extends Person implements Manageable {
 
     }
 
-
-
+    private boolean isCurrentSecretary() {
+        return Gym.getInstance().getSecretary().equals(this);
+    }
 }

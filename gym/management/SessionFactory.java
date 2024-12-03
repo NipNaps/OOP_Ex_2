@@ -1,3 +1,7 @@
+package gym.management;
+import gym.Exception.InstructorNotQualifiedException;
+import gym.management.Sessions.*;
+
 public class SessionFactory {
 
     public static Session createSession(SessionType type, String date, ForumType forum, Instructor instructor) throws InstructorNotQualifiedException {

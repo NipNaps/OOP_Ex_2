@@ -1,3 +1,4 @@
+package gym.customers;
 import java.time.*;
 
 public class Person {

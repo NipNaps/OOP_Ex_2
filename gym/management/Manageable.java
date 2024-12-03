@@ -1,3 +1,8 @@
+package gym.management;
+import gym.Exception.*;
+import gym.customers.*;
+import gym.management.Sessions.*;
+
 import java.util.ArrayList;
 
 public interface Manageable {

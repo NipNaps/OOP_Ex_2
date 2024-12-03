@@ -1,3 +1,5 @@
+package gym; //NEED TO DELETE WHEN FINISHED!
+
 import gym.Exception.*;
 import gym.customers.*;
 import gym.management.*;

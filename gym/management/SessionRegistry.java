@@ -1,5 +1,7 @@
+package gym.management;
 import java.util.ArrayList;
 import java.util.List;
+import gym.management.Sessions.*;
 
 public class SessionRegistry {
     private static SessionRegistry instance;
@@ -18,6 +20,10 @@ public class SessionRegistry {
 
     public void addSession(Session session) {
         sessions.add(session);
+    }
+
+    public boolean isSessionRegistered(Session session) {
+        return sessions.contains(session);
     }
 
     public List<Session> getAllSessions() {

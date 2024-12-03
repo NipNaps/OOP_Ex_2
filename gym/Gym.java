@@ -1,4 +1,6 @@
-import java.util.Queue;
+package gym;
+import gym.management.Secretary;
+import gym.customers.Person;
 
 public class Gym {
     private static final Gym gym = new Gym();

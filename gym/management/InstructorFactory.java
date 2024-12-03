@@ -1,4 +1,6 @@
-import java.util.ArrayList;
+package gym.management;
+import gym.customers.Person;
+import gym.management.Sessions.SessionType;
 import java.util.List;
 
 public class InstructorFactory {

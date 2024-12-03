@@ -1,3 +1,5 @@
+package gym.management;
+import gym.customers.*;
 import java.util.ArrayList;
 import java.util.List;
 

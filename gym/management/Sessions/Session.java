@@ -1,3 +1,6 @@
+package gym.management.Sessions;
+import gym.management.Instructor;
+
 import java.time.*;
 
 public class Session {
