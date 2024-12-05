@@ -1,14 +1,17 @@
 package gym.management;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import gym.management.Sessions.*;
 
 public class SessionRegistry {
     private static SessionRegistry instance;
-    private List<Session> sessions;
+    private final Set<Session> sessions;
 
     private SessionRegistry() {
-        sessions = new ArrayList<>();
+        sessions = new HashSet<>();
     }
 
     public static SessionRegistry getInstance() {
@@ -38,5 +41,15 @@ public class SessionRegistry {
             }
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sessionsData = new StringBuilder();
+
+        for (Session session : getAllSessions())
+            sessionsData.append(session).append("\n");
+
+        return sessionsData.toString();
     }
 }

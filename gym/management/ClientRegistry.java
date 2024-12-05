@@ -1,14 +1,16 @@
 package gym.management;
 import gym.customers.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ClientRegistry {
     private static ClientRegistry instance;
-    private List<Client> clients;
+    private final Set<Client> clients;
 
     private ClientRegistry() {
-        clients = new ArrayList<>();
+        clients = new HashSet<>();
     }
 
     public static ClientRegistry getInstance() {
@@ -36,5 +38,15 @@ public class ClientRegistry {
 
     public List<Client> getAllClients() {
         return new ArrayList<>(clients);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder clientsData = new StringBuilder();
+
+        for (Client client : getAllClients())
+            clientsData.append(client).append("\n");
+
+        return clientsData.toString();
     }
 }

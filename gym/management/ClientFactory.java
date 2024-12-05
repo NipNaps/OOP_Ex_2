@@ -7,12 +7,12 @@ import gym.Exception.DuplicateClientException;
 
 public class ClientFactory {
 
-    public static Client createClient(Person person) throws InvalidAgeException, DuplicateClientException {
+    public static Client createClient(Person person) {
         if (!person.isAboveEightTeen()) {
-            throw new InvalidAgeException("Client must be at least 18 years old.");
+            throw new InvalidAgeException("Error: Client must be at least 18 years old to register");
         }
         if (ClientRegistry.getInstance().isClientRegistered(person)) {
-            throw new DuplicateClientException("Client is already registered.");
+            throw new DuplicateClientException("Error: The client is already registered");
         }
 
         return new Client(person);

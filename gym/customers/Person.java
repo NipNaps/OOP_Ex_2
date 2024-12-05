@@ -1,9 +1,11 @@
 package gym.customers;
+import gym.Gym;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class Person {
     private final String name;
-    protected int balance;
+    private int balance;
     private final Gender gender;
     private final String birthDate;
 
@@ -33,8 +35,25 @@ public class Person {
         return balance;
     }
 
+    public int getAge() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate birthDate = LocalDate.parse(this.birthDate, formatter);
+        LocalDate currentDate = LocalDate.now();
+
+        return Period.between(birthDate, currentDate).getYears();
+    }
+
     public void subtractFromBalance(int amount) {
         this.balance -= amount;
+    }
+
+    public void addToBalance(int amount, String secretaryKey){
+        String key = Gym.getInstance().getSecretary().getKey();
+        if (!secretaryKey.equals(key))
+            throw new SecurityException("Wrong Key,access denied");
+
+        this.balance += amount;
+
     }
 
     public String getBirthDate() {
@@ -42,23 +61,13 @@ public class Person {
     }
 
     public boolean isAboveEightTeen() {
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        int currYear = currentDateTime.getYear();
-        int currMonth = currentDateTime.getMonthValue();
-        int currDay = currentDateTime.getDayOfMonth();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate birthdate = LocalDate.parse(this.birthDate, formatter);
+        LocalDate today = LocalDate.now();
+        LocalDate eighteenthBirthday = birthdate.plusYears(18);
 
-        int year = Integer.parseInt(this.birthDate.substring(6,9));
-        int month = Integer.parseInt(this.birthDate.substring(3, 4));
-        int day = Integer.parseInt(this.birthDate.substring(0, 1));
+        return !today.isBefore(eighteenthBirthday);
 
-        int yearRemainder = currYear - year;
-        int monthRemainder = currMonth - month;
-        int dayRemainder = currDay - day;
-
-        if (yearRemainder > 18)
-            return true;
-
-        else return yearRemainder == 18 && monthRemainder >= 0 && dayRemainder >= 0;
     }
 
     public boolean isSenior(){
