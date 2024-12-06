@@ -7,7 +7,6 @@ import gym.customers.Gender;
 import gym.management.Sessions.ForumType;
 import gym.management.Sessions.Session;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,10 +37,29 @@ public class RegisterClientToSession {
         if (!ClientRegistry.getInstance().isClientRegistered(c1))
             throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons");
 
-       if (!s1.hasPast() && !isFull(s1) && canPay(c1, s1) && isForumMatched(c1, s1.getForumType())) {
+        if (s1.hasPast())
+            Gym.getInstance().getSecretary().getActionPrints().add("Failed registration: Session is not in the future");
+
+        if (!isForumMatched(c1, s1.getForumType())) {
+            switch (s1.getForumType()) {
+                case Seniors -> Gym.getInstance().getSecretary().getActionPrints().add("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
+
+                case Male ,Female -> Gym.getInstance().getSecretary().getActionPrints().add("Failed registration: Client's gender doesn't match the session's gender requirements)");
+            }
+        }
+
+        if (!canPay(c1, s1))
+            Gym.getInstance().getSecretary().getActionPrints().add("Failed registration: Client doesn't have enough balance");
+
+        if (isFull(s1))
+            Gym.getInstance().getSecretary().getActionPrints().add("Failed registration: No available spots for session");
+
+
+        if (!s1.hasPast() && !isFull(s1) && canPay(c1, s1) && isForumMatched(c1, s1.getForumType())) {
             c1.getPerson().subtractFromBalance(s1.getSessionType().getPrice());
             Gym.getInstance().addToGymBalance(s1.getSessionType().getPrice());
             this.clientToSessionListMap.get(s1).add(c1);
+            Gym.getInstance().getSecretary().getActionPrints().add("Registered client: " + c1.getName() + " to session: " + s1.getSessionType() + " on " + s1.getDate() + " for price: " + s1.getSessionType().getPrice());
         }
     }
 

@@ -26,6 +26,7 @@ public class Main {
         gym.setName("CrossFit");
         gym.setSecretary(p1, 9000);
 
+
         Secretary gymSecretary = gym.getSecretary();
 
         Client c1 = gymSecretary.registerClient(p2);

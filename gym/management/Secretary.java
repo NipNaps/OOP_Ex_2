@@ -8,7 +8,7 @@ import java.util.*;
 
 public class Secretary implements Manageable {
     private final Person person;
-    private final List<String> actionPrints = new ArrayList<>();
+    private static final List<String> actionPrints = new ArrayList<>();
     private final String secretaryKey = "E|Me@!(@bTx)GST.";
 
     public Secretary(Person person) {
@@ -72,7 +72,7 @@ public class Secretary implements Manageable {
         if (!SessionRegistry.getInstance().isSessionRegistered(session)) {
             SessionRegistry.getInstance().addSession(session);
             RegisterClientToSession.getInstance().getClientListMap().put(session, new HashSet<>());
-            actionPrints.add("Created new session: " + sessionType + " on " + date + " with instructor: " + instructor);
+            actionPrints.add("Created new session: " + sessionType + " on " + date + " with instructor: " + instructor.getPerson().getName());
             return session;
         }
 
@@ -98,21 +98,25 @@ public class Secretary implements Manageable {
         for (Client client : RegisterClientToSession.getInstance().getClientListMap().get(s1)) {
             client.getNotifications().add(message);
         }
+        this.getActionPrints().add("A message was sent to everyone registered for session " + s1.getSessionType() + " on " + s1.getDate() + " : " + message);
     }
 
     public void notify(String date, String message) {
         for (Session session : RegisterClientToSession.getInstance().getClientListMap().keySet()) {
-            if (session.getDate().substring(0, 9).equals(date)) {
+            if (session.getDate().substring(0, 10).equals(date)) {
                 for (Client client : RegisterClientToSession.getInstance().getClientListMap().get(session)) {
                    client.getNotifications().add(message);
                 }
             }
         }
+        this.getActionPrints().add("A message was sent to everyone registered for a session on " + date  + " : " + message);
     }
 
     public void notify(String message) {
         for (Client client :ClientRegistry.getInstance().getAllClients() )
            client.getNotifications().add(message);
+
+        this.getActionPrints().add("A message was sent to all gym clients: " + message);
     }
 
     public void paySalaries() {
@@ -124,6 +128,9 @@ public class Secretary implements Manageable {
             instructor.getPerson().addToBalance(instructor.getHourSalary(), this.secretaryKey);
             gym.subtractFromGymBalance(instructor.getHourSalary());
         }
+
+        this.getActionPrints().add("Salaries have been paid to all employees");
+
     }
 
     public void printActions() {
