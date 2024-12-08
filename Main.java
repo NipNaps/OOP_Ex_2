@@ -1,7 +1,7 @@
 import gym.Exception.*;
 import gym.customers.*;
 import gym.management.*;
-import gym.management.Sessions.*;
+import gym.management.Sessions.SessionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -122,7 +122,7 @@ public class Main {
 
         System.out.println("\n" + c1.getName() + " Notifications: " + c1.getNotifications());
 
-        System.out.println("\n---Gym information---");
+        System.out.println("\n---gym.Exception.management.Gym information---");
 
         System.out.print(gym);
     }
