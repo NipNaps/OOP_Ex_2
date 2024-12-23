@@ -21,7 +21,7 @@ public class Session {
     public Session(SessionType type, LocalDateTime dateTime, ForumType forum, Instructor instructor, int maxCapacity, double price) {
 
         this.type = type;
-        this.dateTime = LocalDateTime.parse(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        this.dateTime = dateTime;
         this.forum = forum;
         this.instructor = instructor;
         this.maxCapacity = maxCapacity;

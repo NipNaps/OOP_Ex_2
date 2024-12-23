@@ -1,8 +1,10 @@
 package gym.customers;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 
 public class Person {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private String name;
     private double balance;
     private Gender gender;
@@ -31,7 +33,7 @@ public class Person {
         return birthdate;
     }
     public int getAge() {
-        LocalDate birthDate = LocalDate.parse(birthdate);
+        LocalDate birthDate = LocalDate.parse(birthdate, DATE_FORMAT);
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
     public String toString() {
