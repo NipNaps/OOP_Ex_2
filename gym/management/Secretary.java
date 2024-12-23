@@ -10,6 +10,8 @@ import gym.management.Sessions.Session;
 import gym.management.Sessions.ForumType;
 import gym.management.Sessions.SessionType;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +67,29 @@ public class Secretary extends Person {
         if (!instructor.isCertified(sessionType)) {
             throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
         }
-        Session session = new Session(sessionType, date, forum, instructor, 0, 0);
+        int maxCapacity;
+        double price;
+        switch (sessionType) {
+            case Pilates:
+                maxCapacity = 30;
+                price = 60;
+                break;
+            case MachinePilates:
+                maxCapacity = 10;
+                price = 80;
+                break;
+            case ThaiBoxing:
+                maxCapacity = 20;
+                price = 100;
+                break;
+            case Ninja:
+                maxCapacity = 5;
+                price = 150;
+                break;
+                default:
+                    throw new IllegalArgumentException("Error: Unknown session type");
+        }
+        Session session = new Session(sessionType, LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), forum, instructor, 0, price);
         sessions.add(session);
         logAction("Created new session: " + sessionType + " on " + date + " with instructor " + instructor.getName());
         return session;
@@ -75,7 +99,7 @@ public class Secretary extends Person {
         if (!clients.contains(client)) {
             throw new ClientNotRegisteredException("Error: Client is not registered");
         }
-        if (!sessions.addParticipant(client)) {
+        if (!session.addParticipant(client)) {
             throw new DuplicateClientException("Error: Client is already registered");
         }
         logAction("Registered new client: " + client.getName() + " to session: " + session);
