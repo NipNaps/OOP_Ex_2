@@ -119,6 +119,15 @@ public class Secretary extends Person {
         logAction("A message was sent too all gym clients: " + message);
     }
 
+    public void notify(String date, String message) {
+        // Notify all clients with a specific date in the message
+        for (Client client : clients) {
+            client.addNotification(message);
+        }
+        logAction("Notified all clients with date: [" + date + "] " + message);
+    }
+
+
     public void notify(Session session, String message) {
         for (Client client : session.getParticipants()) {
             client.addNotification(message);
