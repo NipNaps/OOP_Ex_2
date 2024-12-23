@@ -36,6 +36,6 @@ public class Gym {
         this.balance += amount;
     }
     public String toString() {
-        return "Gym Name " + name " | Gym Balance: " + balance + "\nSecretary: " + secretary;
+        return "Gym Name " + name + " | Gym Balance: " + balance + "\nSecretary: " + secretary;
     }
 }

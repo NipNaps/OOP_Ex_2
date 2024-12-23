@@ -29,4 +29,4 @@ import java.util.List;
             return super.toString() + " | Role: Secretary | Salary per month: " + salary;
         }
     }
-}
+
