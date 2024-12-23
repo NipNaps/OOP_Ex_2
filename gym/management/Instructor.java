@@ -1,17 +1,30 @@
 package gym.management;
 
+import gym.customers.Gender;
 import gym.customers.Person;
 import gym.management.Sessions.SessionType;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class Instructor extends Person {
-    private double salaryPerHour;
-    private List<SessionType> certifiedClasses;
+    private List<SessionType> qualification;
+    private double salary;
 
-    public Instructor(Person person, double salaryPerHour, List<SessionType> certifiedClasses) {
-        super(person.getName(), person.getBalance(), person.getGender(),person.getBirthdate());
-        this.salaryPerHour = salaryPerHour;
-        this.certifiedClasses = new ArrayList<>() certifiedClasses;
+    public Instructor(String name, double balance, Gender gender, String birthDate, double salary, List<SessionType> qualification) {
+        super(name, balance, gender, birthDate);
+        this.salary = salary;
+        this.qualification = qualification;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public List<SessionType> getQualification() {
+        return qualification;
     }
 }
