@@ -62,7 +62,7 @@ public class Secretary extends Person {
         return instructor;
     }
 
-    public Session addSession(SessionType sessionType, String date, ForumType forumType, Instructor instructor)
+    public Session addSession(SessionType sessionType, String date, ForumType forum, Instructor instructor)
             throws InstructorNotQualifiedException {
         if (!instructor.isCertified(sessionType)) {
             throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
@@ -89,7 +89,13 @@ public class Secretary extends Person {
                 default:
                     throw new IllegalArgumentException("Error: Unknown session type");
         }
-        Session session = new Session(sessionType, LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), forum, instructor, 0, price);
+        Session session = new Session(
+                sessionType, LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                forum,
+                instructor,
+                0,
+                price
+        );
         sessions.add(session);
         logAction("Created new session: " + sessionType + " on " + date + " with instructor " + instructor.getName());
         return session;
@@ -117,7 +123,7 @@ public class Secretary extends Person {
         for (Client client : session.getParticipants()) {
             client.addNotification(message);
         }
-        logAction("A message was sent to everyone registered for session " + session + ": " + message);
+        logAction("A message was sent to everyone registered for session " + session.getForum() + ": " + message);
     }
 
     public void paySalaries() {
