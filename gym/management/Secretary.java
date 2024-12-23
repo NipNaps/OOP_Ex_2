@@ -56,7 +56,7 @@ public class Secretary extends Person {
     }
 
     public Instructor hireInstructor(Person person, double salaryPerHour, List<SessionType> certifications) {
-        Instructor instructor = new Instructor(person, salaryPerHour, certifications);
+        Instructor instructor = new Instructor(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate(), salaryPerHour, certifications);
         instructors.add(instructor);
         logAction("Hired new instructor: " + instructor.getName() + " with salary per hour: " + salaryPerHour);
         return instructor;

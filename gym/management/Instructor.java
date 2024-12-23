@@ -7,13 +7,13 @@ import gym.management.Sessions.SessionType;
 import java.util.List;
 
 public class Instructor extends Person {
-    private List<SessionType> qualification;
+    private List<SessionType> qualifications;
     private double salary;
 
-    public Instructor(String name, double balance, Gender gender, String birthDate, double salary, List<SessionType> qualification) {
+    public Instructor(String name, double balance, Gender gender, String birthDate, double salary, List<SessionType> qualifications) {
         super(name, balance, gender, birthDate);
         this.salary = salary;
-        this.qualification = qualification;
+        this.qualifications = qualifications;
     }
 
     public double getSalary() {
@@ -25,6 +25,22 @@ public class Instructor extends Person {
     }
 
     public List<SessionType> getQualification() {
-        return qualification;
+        return qualifications;
+    }
+
+    // Add a new qualification
+    public void addQualification(SessionType qualification) {
+        if (!qualifications.contains(qualification)) {
+            qualifications.add(qualification);
+        }
+    }
+
+    // Remove a qualification
+    public void removeQualification(SessionType qualification) {
+        qualifications.remove(qualification);
+    }
+
+    public boolean isCertified(SessionType sessionType) {
+        return qualifications.contains(sessionType);
     }
 }
