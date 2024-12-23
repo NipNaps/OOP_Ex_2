@@ -9,6 +9,7 @@ import java.util.List;
 public class Instructor extends Person {
     private List<SessionType> qualifications;
     private double salary;
+    private static final int WORKING_HOURS_PER_MONTH = 160; // Standard working hours per month
 
     public Instructor(String name, double balance, Gender gender, String birthDate, double salary, List<SessionType> qualifications) {
         super(name, balance, gender, birthDate);
@@ -42,5 +43,10 @@ public class Instructor extends Person {
 
     public boolean isCertified(SessionType sessionType) {
         return qualifications.contains(sessionType);
+    }
+
+    // Calculate salary per hour
+    public double getSalaryPerHour() {
+        return salary / WORKING_HOURS_PER_MONTH;
     }
 }
