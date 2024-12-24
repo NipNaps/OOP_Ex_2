@@ -90,7 +90,7 @@ public class Secretary extends Person {
                     throw new IllegalArgumentException("Error: Unknown session type");
         }
         Session session = new Session(
-                sessionType, LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+                sessionType, LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
                 forum,
                 instructor,
                 0,

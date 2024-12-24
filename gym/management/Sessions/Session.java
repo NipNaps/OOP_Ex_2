@@ -65,4 +65,13 @@ public class Session {
         participants.add(client);
         return true;
     }
+    public String toString() {
+        return "Session type: " + type +
+                " | Date: " + dateTime +
+                " | Forum: " + forum +
+                " | Instructor: " + instructor.getName() +
+                " | Participants: " + participants.size() + "/" + maxCapacity +
+                " | Price: " + price;
+
+    }
 }

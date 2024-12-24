@@ -4,7 +4,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 public class Person {
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private String name;
     private double balance;
     private Gender gender;
@@ -36,6 +36,7 @@ public class Person {
         LocalDate birthDate = LocalDate.parse(birthdate, DATE_FORMAT);
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
+    @Override
     public String toString() {
         return  "Name: " + name + " | Gender: " + gender + " | Birthday: " + birthdate + " | Balance: " + balance;
     }
