@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Session implements Subject {
     private SessionType type;
-    private LocalDateTime dateTime;
+    private DateTimeFormatter dateTime;
     private ForumType forum;
     private Instructor instructor;
     private List<Client> participants;
@@ -20,7 +20,7 @@ public class Session implements Subject {
     private  double price;
 
     public Session(SessionType type, LocalDateTime dateTime, ForumType forum, Instructor instructor, int maxCapacity, double price) {
-        if (maxCapacity <= 0) {
+        if (maxCapacity < 0) {
             throw new IllegalArgumentException("maxCapacity must be greater than 0");
         }
         if (price < 0) {
@@ -28,7 +28,7 @@ public class Session implements Subject {
         }
 
         this.type = type;
-        this.dateTime = LocalDateTime.parse(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        this.dateTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
         this.forum = forum;
         this.instructor = instructor;
         this.maxCapacity = maxCapacity;
@@ -61,7 +61,7 @@ public class Session implements Subject {
         return type;
     }
 
-    public LocalDateTime getDateTime() {
+    public DateTimeFormatter getDateTime() {
         return dateTime;
     }
 

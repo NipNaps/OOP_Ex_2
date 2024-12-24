@@ -73,7 +73,7 @@ public class Secretary extends Person {
         if (!instructor.isCertified(sessionType)) {
             throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
         }
-        int maxCapacity;
+        int maxCapacity = 0;
         double price;
         switch (sessionType) {
             case Pilates:
