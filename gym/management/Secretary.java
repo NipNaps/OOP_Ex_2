@@ -21,6 +21,7 @@ public class Secretary extends Person {
     private List<Client> clients;
     private List<Instructor> instructors;
     private List<Session> sessions;
+    private List<Client> observers;
 
     public Secretary(Person person, double salary) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
@@ -86,8 +87,8 @@ public class Secretary extends Person {
                 maxCapacity = 5;
                 price = 150;
                 break;
-                default:
-                    throw new IllegalArgumentException("Error: Unknown session type");
+            default:
+                throw new IllegalArgumentException("Error: Unknown session type");
         }
         Session session = new Session(
                 sessionType, LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
@@ -114,26 +115,24 @@ public class Secretary extends Person {
 
     public void notify(String message) {
         for (Client client : clients) {
-            client.addNotification(message);
+            client.update(message);
         }
-        logAction("A message was sent too all gym clients: " + message);
+        logAction("A message was sent to all gym clients: " + message);
     }
 
     public void notify(String date, String message) {
-        // Notify all clients with a specific date in the message
         for (Client client : clients) {
-            client.addNotification(message);
+            client.update("[" + date + "] " + message);
         }
-        logAction("Notified all clients with date: [" + date + "] " + message);
+        logAction("Notified all client with date : [" + date + "] " + message);
     }
-
-
     public void notify(Session session, String message) {
         for (Client client : session.getParticipants()) {
-            client.addNotification(message);
+            client.update(message);
         }
-        logAction("A message was sent to everyone registered for session " + session.getForum() + ": " + message);
+        logAction("A message was sent to participants of session: " + session.getType() + " - " + message);
     }
+
 
     public void paySalaries() {
         double totalSalary = 0;

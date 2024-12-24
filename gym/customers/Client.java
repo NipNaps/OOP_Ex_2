@@ -1,10 +1,12 @@
 package gym.customers;
 
+import gym.management.Observer;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Client extends Person {
+public class Client extends Person implements Observer {
     private List<String> notifications;
 
     public Client(String name, double balance, Gender gender, String birthdate) {
@@ -12,7 +14,7 @@ public class Client extends Person {
         this.notifications = new ArrayList<>();
 
     }
-    public void addNotification(String message) {
+    public void update(String message) {
         notifications.add(message);
     }
     public List<String> getNotifications() {

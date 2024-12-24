@@ -2,6 +2,7 @@ package gym.management.Sessions;
 
 import gym.customers.Client;
 import gym.management.Instructor;
+import gym.management.Subject;
 
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Session {
+public class Session implements Subject {
     private SessionType type;
     private LocalDateTime dateTime;
     private ForumType forum;
@@ -19,6 +20,12 @@ public class Session {
     private  double price;
 
     public Session(SessionType type, LocalDateTime dateTime, ForumType forum, Instructor instructor, int maxCapacity, double price) {
+        if (maxCapacity <= 0) {
+            throw new IllegalArgumentException("maxCapacity must be greater than 0");
+        }
+        if (price < 0) {
+            throw new IllegalArgumentException("price must be greater than 0");
+        }
 
         this.type = type;
         this.dateTime = dateTime;
@@ -27,6 +34,27 @@ public class Session {
         this.maxCapacity = maxCapacity;
         this.price = price;
         this.participants = new ArrayList<>();
+    }
+    @Override
+    public void attach(Client client) {
+        if(!participants.contains(client)) {
+            participants.add(client);
+        }
+    }
+
+    @Override
+    public void detach(Client client) {
+        participants.remove(client);
+    }
+
+    @Override
+    public void notifyObservers(String message) {
+        if(!participants.isEmpty()) {
+            System.out.println("No participants to notify for session: " + type);
+        }
+        for(Client client : participants) {
+            client.update(message);
+        }
     }
 
     public SessionType getType() {
