@@ -23,6 +23,7 @@ public class Secretary extends Person {
     private List<Session> sessions;
     private List<Client> observers;
 
+    // Constructor
     public Secretary(Person person, double salary) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
         this.salary = salary;
@@ -32,6 +33,7 @@ public class Secretary extends Person {
         this.sessions = new ArrayList<>();
     }
 
+    // Method for client registration the gym
     public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
         if (person.getAge() < 18) {
             throw new InvalidAgeException("Error: Client age must be at least 18 years old");
@@ -48,6 +50,7 @@ public class Secretary extends Person {
 
     }
 
+    // Method that removes client from the gym
     public void unregisterClient(Client client) throws ClientNotRegisteredException {
         if (!clients.contains(client)) {
             throw new ClientNotRegisteredException("Error: Client is not registered");
@@ -56,6 +59,7 @@ public class Secretary extends Person {
         logAction("Unregistered client: " + client.getName());
     }
 
+    // Method that add instructors to the gym
     public Instructor hireInstructor(Person person, double salaryPerHour, List<SessionType> certifications) {
         Instructor instructor = new Instructor(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate(), salaryPerHour, certifications);
         instructors.add(instructor);
@@ -63,6 +67,7 @@ public class Secretary extends Person {
         return instructor;
     }
 
+    // Method that add sessions to the gym
     public Session addSession(SessionType sessionType, String date, ForumType forum, Instructor instructor)
             throws InstructorNotQualifiedException {
         if (!instructor.isCertified(sessionType)) {
