@@ -28,7 +28,7 @@ public class Session implements Subject {
         }
 
         this.type = type;
-        this.dateTime = dateTime;
+        this.dateTime = LocalDateTime.parse(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
         this.forum = forum;
         this.instructor = instructor;
         this.maxCapacity = maxCapacity;
