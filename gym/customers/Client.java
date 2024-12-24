@@ -4,7 +4,7 @@ import gym.management.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// asdasdasda
 
 public class Client extends Person implements Observer {
     private List<String> notifications;
