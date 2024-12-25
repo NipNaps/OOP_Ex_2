@@ -53,7 +53,7 @@ public class Secretary extends Person {
     // Method that removes client from the gym
     public void unregisterClient(Client client) throws ClientNotRegisteredException {
         if (!clients.contains(client)) {
-            throw new ClientNotRegisteredException("Error: Client is not registered");
+            throw new ClientNotRegisteredException("Error: Registration is required before attempting to unregister");
         }
         clients.remove(client);
         logAction("Unregistered client: " + client.getName());
@@ -99,7 +99,7 @@ public class Secretary extends Person {
                 sessionType, LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
                 forum,
                 instructor,
-                0,
+                maxCapacity,
                 price
         );
         sessions.add(session);

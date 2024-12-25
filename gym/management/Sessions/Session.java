@@ -20,7 +20,7 @@ public class Session implements Subject {
     private  double price;
 
     public Session(SessionType type, LocalDateTime dateTime, ForumType forum, Instructor instructor, int maxCapacity, double price) {
-        if (maxCapacity < 0) {
+        if (maxCapacity <= 0) {
             throw new IllegalArgumentException("maxCapacity must be greater than 0");
         }
         if (price < 0) {
@@ -72,22 +72,26 @@ public class Session implements Subject {
     public Instructor getInstructor() {
         return instructor;
     }
+
     public int getMaxCapacity() {
         return maxCapacity;
     }
+
     public double getPrice() {
         return price;
     }
+
     public List<Client> getParticipants() {
         return participants;
     }
+
     public boolean addParticipant(Client client) {
         if (participants.size() >= maxCapacity) {
             System.out.println("Error: No avaiable spots for this session");
             return false;
         }
         if (participants.contains(client)) {
-            System.out.println("Error: Participant is already registered for this session");
+            System.out.println("Error: The client is already registered for this lesson");
             return false;
         }
         participants.add(client);
