@@ -1,14 +1,25 @@
 package gym.management;
 
+import gym.customers.Client;
 import gym.customers.Person;
+import gym.management.Sessions.Session;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Gym {
     private static Gym instance;
     private String name;
     private Secretary secretary;
     private double balance;
+    private List<Client> clients;
+    private List <Instructor> instructors;
+    private List<Session> sessions;
 
     private Gym() {
+        this.clients = new ArrayList<>();
+        this.sessions = new ArrayList<>();
+        this.instructors = new ArrayList<>();
         this.balance = 0; // Default gym balance.
     }
     public static Gym getInstance() {
@@ -36,6 +47,9 @@ public class Gym {
         this.balance += amount;
     }
     public String toString() {
-        return "Gym Name " + name + " | Gym Balance: " + balance + "\nSecretary: " + secretary;
+        return "Gym Name " + name + "\n" +
+                "  Gym Balance: " + balance + "\n" +
+                "Clients: Data" +  clients + "\n" +
+                "Sessions Data" + sessions;
     }
 }

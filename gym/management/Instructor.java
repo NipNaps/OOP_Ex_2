@@ -49,4 +49,12 @@ public class Instructor extends Person {
     public double getSalaryPerHour() {
         return salary / WORKING_HOURS_PER_MONTH;
     }
+    public String toString() {
+        return  "ID: " + id +
+                " | Name: " + getName() +
+                " | Gender: " + getGender() +
+                " | Birthday: " + getBirthdate() +
+                " | Age: " + getAge() +
+                " | Balance : " + getBalance();
+    }
 }
