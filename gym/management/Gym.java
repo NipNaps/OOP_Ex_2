@@ -28,26 +28,45 @@ public class Gym {
         }
         return instance;
     }
-    public String getName() {
-        return name;
-    }
+
     public void setName(String name) {
         this.name = name;
     }
     public Secretary getSecretary() {
         return secretary;
     }
-    public void setSecretary(Person perosn, double salary) {
-        this.secretary = new Secretary(perosn, salary);
+    public void setSecretary(Person person, double salary) {
+        this.secretary = new Secretary(person, salary);
     }
-    public double getBalance() {
-        return balance;
+    public List<Client> getClients() {
+        return clients;
     }
+    public List<Instructor> getInstructors() {
+        return instructors;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
     public void updateBalance(double amount) {
         this.balance += amount;
     }
     public String toString() {
+        String clientsData = "";
+        for (Client client : clients) {
+            clientsData += client.toString() + "\n";
+        }
+        String employeesData = "";
+        for (Instructor instructor : instructors) {
+            employeesData += instructor.toString() + "\n";
+        }
+        String sessionsData = "";
+        for (Session session : sessions) {
+            sessionsData += session + "\n";
+        }
         return "Gym Name " + name + "\n" +
+                "Gym Secretary " + secretary + "\n" +
                 "  Gym Balance: " + balance + "\n" +
                 "Clients: Data" +  clients + "\n" +
                 "Sessions Data" + sessions;

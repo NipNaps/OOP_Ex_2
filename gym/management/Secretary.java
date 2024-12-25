@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Secretary extends Person {
     private double salary;
-    private List<String> actionHistroy;
+    private List<String> actionHistory;
     private List<Client> clients;
     private List<Instructor> instructors;
     private List<Session> sessions;
@@ -27,10 +27,14 @@ public class Secretary extends Person {
     public Secretary(Person person, double salary) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
         this.salary = salary;
-        this.actionHistroy = new ArrayList<>();
+        this.actionHistory = new ArrayList<>();
         this.clients = new ArrayList<>();
         this.instructors = new ArrayList<>();
         this.sessions = new ArrayList<>();
+    }
+
+    public double getSalary() {
+        return salary;
     }
 
     // Method for client registration the gym
@@ -149,11 +153,11 @@ public class Secretary extends Person {
     }
 
     public void logAction(String action) {
-        actionHistroy.add(action);
+        actionHistory.add(action);
     }
 
     public void printActions() {
-        for (String action : actionHistroy) {
+        for (String action : actionHistory) {
             System.out.println(action);
         }
     }
