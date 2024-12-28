@@ -55,21 +55,22 @@ public class Gym {
     }
     public String toString() {
         String clientsData = "";
-        for (Client client : clients) {
+        for (Client client : getClients()) {
             clientsData += client.toString() + "\n";
         }
         String employeesData = "";
-        for (Instructor instructor : instructors) {
+        employeesData += getSecretary() + "\n";
+        for (Instructor instructor : getInstructors()) {
             employeesData += instructor.toString() + "\n";
         }
         String sessionsData = "";
-        for (Session session : sessions) {
-            sessionsData += session + "\n";
+        for (Session session : getSessions()) {
+            sessionsData += session.toString() + "\n";
         }
         return "Gym Name " + name + "\n" +
                 "Gym Secretary " + secretary + "\n" +
-                "  Gym Balance: " + balance + "\n" +
-                "Clients: Data" +  clients + "\n" +
-                "Sessions Data" + sessions;
+                "  Gym Balance: " + balance + "\n\n" +
+                "Clients: Data" +  clientsData.trim() + "\n" +
+                "Sessions Data" + sessionsData.trim();
     }
 }

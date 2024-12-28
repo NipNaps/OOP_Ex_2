@@ -44,13 +44,13 @@ public class Secretary extends Person {
         if (person.getAge() < 18) {
             throw new InvalidAgeException("Error: Client age must be at least 18 years old");
         }
-        for (Client client : clients) {
-            if (client.getName().equals(person.getName())) {
+        for (Client client : Gym.getInstance().getClients()) {
+            if (client.getName().equals(person.getName()) && client.getBirthdate().equals(person.getBirthdate())) {
                 throw new DuplicateClientException("Error: Client is already registered");
             }
         }
         Client client = new Client(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
-        clients.add(client);
+        Gym.getInstance().getClients().add(client);
         logAction("Registered new client: " + client.getName());
         return client;
 
@@ -58,17 +58,17 @@ public class Secretary extends Person {
 
     // Method that removes client from the gym
     public void unregisterClient(Client client) throws ClientNotRegisteredException {
-        if (!clients.contains(client)) {
+        if (!Gym.getInstance().getClients().contains(client)) {
             throw new ClientNotRegisteredException("Error: Registration is required before attempting to unregister");
         }
-        clients.remove(client);
+        Gym.getInstance().getClients().remove(client);
         logAction("Unregistered client: " + client.getName());
     }
 
     // Method that add instructors to the gym
     public Instructor hireInstructor(Person person, int salaryPerHour, List<SessionType> certifications) {
         Instructor instructor = new Instructor(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate(), salaryPerHour, certifications);
-        instructors.add(instructor);
+        Gym.getInstance().getInstructors().add(instructor);
         logAction("Hired new instructor: " + instructor.getName() + " with salary per hour: " + salaryPerHour);
         return instructor;
     }
@@ -111,14 +111,14 @@ public class Secretary extends Person {
                 maxCapacity,
                 price
         );
-        sessions.add(session);
+        Gym.getInstance().getSessions().add(session);
         logAction("Created new session: " + sessionType + " on " + formattedDate + " with instructor " + instructor.getName());
         return session;
     }
 
     public void registerClientToLesson(Client client, Session session) throws DuplicateClientException, ClientNotRegisteredException {
 
-        if (!clients.contains(client)) { throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons"); }
+        if (!Gym.getInstance().getClients().contains(client)) { throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons"); }
 
         else if (session.getDateTime().isBefore(LocalDateTime.now()) || session.getDateTime().isEqual(LocalDateTime.now())) {
             logAction("Failed registration: Session is not in the future");
