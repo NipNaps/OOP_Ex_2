@@ -5,12 +5,15 @@ import gym.Exception.DuplicateClientException;
 import gym.Exception.InstructorNotQualifiedException;
 import gym.Exception.InvalidAgeException;
 import gym.customers.Client;
+import gym.customers.Gender;
 import gym.customers.Person;
 import gym.management.Sessions.Session;
 import gym.management.Sessions.ForumType;
 import gym.management.Sessions.SessionType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +103,8 @@ public class Secretary extends Person {
                 throw new IllegalArgumentException("Error: Unknown session type");
         }
         Session session = new Session(
-                sessionType, LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
+                sessionType,
+                date,
                 forum,
                 instructor,
                 maxCapacity,
@@ -112,14 +116,33 @@ public class Secretary extends Person {
     }
 
     public void registerClientToLesson(Client client, Session session) throws DuplicateClientException, ClientNotRegisteredException {
-        if (!clients.contains(client)) {
-            throw new ClientNotRegisteredException("Error: Client is not registered");
-        }
-        if (!session.addParticipant(client)) {
-            throw new DuplicateClientException("Error: Client is already registered");
-        }
-        logAction("Registered new client: " + client.getName() + " to session: " + session);
 
+        if (session.getDateTime().isBefore(LocalDate.now()) || session.getDateTime().isEqual(LocalDate.now())) {
+            System.out.println("Failed registration: Session is not in the future");
+
+        } else if (session.getParticipants().size() >= session.getMaxCapacity()) {
+            System.out.println("Failed registration: No available spots for session");
+
+        } else if (client.getBalance() < session.getPrice()) {
+            System.out.println("Failed registration: Client doesn't have enough balance");
+
+        } else if (session.getForum().equals(ForumType.Male) && (client.getGender() != Gender.Male)) {
+                System.out.println("Failed registration: Client's gender doesn't match the session's gender requirements");
+
+        } else if (session.getForum().equals(ForumType.Female) && (client.getGender() != Gender.Female)) {
+                System.out.println("Failed registration: Client's gender doesn't match the session's gender requirements");
+
+        } else if (session.getForum().equals(ForumType.Seniors) && (client.getAge() < 65)) {
+            System.out.println("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
+        } else {
+            if (!clients.contains(client)) {
+                throw new ClientNotRegisteredException("Error: Client is not registered");
+            }
+            if (!session.addParticipant(client)) {
+                throw new DuplicateClientException("Error: Client is already registered");
+            }
+            logAction("Registered new client: " + client.getName() + " to session: " + session);
+        }
     }
 
     public void notify(String message) {

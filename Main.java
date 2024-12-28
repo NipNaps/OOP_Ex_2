@@ -113,7 +113,7 @@ public class Main {
         try{
             gymSecretary.registerClientToLesson(c1, s1);
         }
-        catch (NullPointerException e){
+        catch (DuplicateClientException e){
             System.out.println("Error: Former secretaries are not permitted to perform actions");
         }
 

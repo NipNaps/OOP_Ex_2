@@ -5,6 +5,7 @@ import gym.management.Instructor;
 import gym.management.Subject;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,14 +13,14 @@ import java.util.List;
 
 public class Session implements Subject {
     private SessionType type;
-    private DateTimeFormatter dateTime;
-    private ForumType forum;
+    private String dateTime;
+    private final ForumType forum;
     private Instructor instructor;
     private List<Client> participants;
-    private int maxCapacity;
-    private  double price;
+    private final int maxCapacity;
+    private final double price;
 
-    public Session(SessionType type, LocalDateTime dateTime, ForumType forum, Instructor instructor, int maxCapacity, double price) {
+    public Session(SessionType type, String dateTime, ForumType forum, Instructor instructor, int maxCapacity, double price) {
         if (maxCapacity <= 0) {
             throw new IllegalArgumentException("maxCapacity must be greater than 0");
         }
@@ -28,13 +29,14 @@ public class Session implements Subject {
         }
 
         this.type = type;
-        this.dateTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        this.dateTime = dateTime;
         this.forum = forum;
         this.instructor = instructor;
         this.maxCapacity = maxCapacity;
         this.price = price;
         this.participants = new ArrayList<>();
     }
+
     @Override
     public void attach(Client client) {
         if(!participants.contains(client)) {
@@ -61,8 +63,8 @@ public class Session implements Subject {
         return type;
     }
 
-    public DateTimeFormatter getDateTime() {
-        return dateTime;
+    public LocalDate getDateTime() {
+        return LocalDate.parse(this.dateTime, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 
     public ForumType getForum() {
@@ -91,7 +93,6 @@ public class Session implements Subject {
             return false;
         }
         if (participants.contains(client)) {
-            System.out.println("Error: The client is already registered for this lesson");
             return false;
         }
         participants.add(client);
