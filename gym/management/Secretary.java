@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Secretary extends Person {
     private double salary;
-    private List<String> actionHistory;
+    private static List<String> actionHistory = new ArrayList<>();
     private List<Client> clients;
     private List<Instructor> instructors;
     private List<Session> sessions;
@@ -30,7 +30,6 @@ public class Secretary extends Person {
     public Secretary(Person person, double salary) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
         this.salary = salary;
-        this.actionHistory = new ArrayList<>();
         this.clients = new ArrayList<>();
         this.instructors = new ArrayList<>();
         this.sessions = new ArrayList<>();
@@ -117,30 +116,27 @@ public class Secretary extends Person {
 
     public void registerClientToLesson(Client client, Session session) throws DuplicateClientException, ClientNotRegisteredException {
 
-        if (session.getDateTime().isBefore(LocalDate.now()) || session.getDateTime().isEqual(LocalDate.now())) {
-            System.out.println("Failed registration: Session is not in the future");
+        if (!clients.contains(client)) { throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons"); }
+
+        else if (session.getDateTime().isBefore(LocalDate.now()) || session.getDateTime().isEqual(LocalDate.now())) {
+            logAction("Failed registration: Session is not in the future");
 
         } else if (session.getParticipants().size() >= session.getMaxCapacity()) {
-            System.out.println("Failed registration: No available spots for session");
+            logAction("Failed registration: No available spots for session");
 
         } else if (client.getBalance() < session.getPrice()) {
-            System.out.println("Failed registration: Client doesn't have enough balance");
+            logAction("Failed registration: Client doesn't have enough balance");
 
         } else if (session.getForum().equals(ForumType.Male) && (client.getGender() != Gender.Male)) {
-                System.out.println("Failed registration: Client's gender doesn't match the session's gender requirements");
+                logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
 
         } else if (session.getForum().equals(ForumType.Female) && (client.getGender() != Gender.Female)) {
-                System.out.println("Failed registration: Client's gender doesn't match the session's gender requirements");
+                logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
 
         } else if (session.getForum().equals(ForumType.Seniors) && (client.getAge() < 65)) {
-            System.out.println("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
+            logAction("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
         } else {
-            if (!clients.contains(client)) {
-                throw new ClientNotRegisteredException("Error: Client is not registered");
-            }
-            if (!session.addParticipant(client)) {
-                throw new DuplicateClientException("Error: Client is already registered");
-            }
+            if (!session.addParticipant(client)) { throw new DuplicateClientException("Error: The client is already registered for this lesson"); }
             logAction("Registered new client: " + client.getName() + " to session: " + session);
         }
     }
@@ -175,7 +171,7 @@ public class Secretary extends Person {
         logAction("Salaries have been paid to all employees");
     }
 
-    public void logAction(String action) {
+    public static void logAction(String action) {
         actionHistory.add(action);
     }
 
