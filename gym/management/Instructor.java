@@ -10,8 +10,9 @@ public class Instructor extends Person {
     private List<SessionType> qualifications;
     private int salary;
 
-    public Instructor(String name, int balance, Gender gender, String birthDate, int salary, List<SessionType> qualifications) {
-        super(name, balance, gender, birthDate);
+    public Instructor(Person person, int salary, List<SessionType> qualifications) {
+        super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
+        this.setId(person.getId());
         this.salary = salary;
         this.qualifications = qualifications;
     }

@@ -29,10 +29,8 @@ public class Secretary extends Person {
     // Constructor
     public Secretary(Person person, int salary) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
+        this.setId(person.getId());
         this.salary = salary;
-        this.clients = new ArrayList<>();
-        this.instructors = new ArrayList<>();
-        this.sessions = new ArrayList<>();
     }
 
     public double getSalary() {
@@ -49,7 +47,7 @@ public class Secretary extends Person {
                 throw new DuplicateClientException("Error: The client is already registered");
             }
         }
-        Client client = new Client(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
+        Client client = new Client(person);
         Gym.getInstance().getClients().add(client);
         logAction("Registered new client: " + client.getName());
         return client;
@@ -67,7 +65,7 @@ public class Secretary extends Person {
 
     // Method that add instructors to the gym
     public Instructor hireInstructor(Person person, int salaryPerHour, List<SessionType> certifications) {
-        Instructor instructor = new Instructor(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate(), salaryPerHour, certifications);
+        Instructor instructor = new Instructor(person, salaryPerHour, certifications);
         Gym.getInstance().getInstructors().add(instructor);
         logAction("Hired new instructor: " + instructor.getName() + " with salary per hour: " + salaryPerHour);
         return instructor;
@@ -146,14 +144,14 @@ public class Secretary extends Person {
     }
 
     public void notify(String message) {
-        for (Client client : clients) {
+        for (Client client : Gym.getInstance().getClients()) {
             client.update(message);
         }
         logAction("A message was sent to all gym clients: " + message);
     }
 
     public void notify(String date, String message) {
-        for (Client client : clients) {
+        for (Client client : Gym.getInstance().getClients()) {
             client.update("[" + date + "] " + message);
         }
         logAction("Notified all client with date : [" + date + "] " + message);

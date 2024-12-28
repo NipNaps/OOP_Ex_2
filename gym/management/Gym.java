@@ -33,6 +33,9 @@ public class Gym {
         this.name = name;
     }
     public Secretary getSecretary() {
+        if (secretary == null) {
+            throw new IllegalArgumentException("Error: secretary has not been set");
+        }
         return secretary;
     }
     public void setSecretary(Person person, int salary) {
@@ -70,8 +73,8 @@ public class Gym {
             sessionsData += session + "\n";
         }
         return "Gym Name " + name + "\n" +
-                "Gym Secretary " + secretary + "\n" +
-                "  Gym Balance: " + balance + "\n\n" +
+                "Gym Secretary: " + secretary + "\n" +
+                "Gym Balance: " + balance + "\n\n" +
                 "Clients Data:\n" +  clientsData.trim() + "\n\n" +
                 "Employees Data:\n" +  employeesData.trim() + "\n\n" +
                 "Sessions Data:\n" + sessionsData.trim();

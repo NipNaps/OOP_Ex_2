@@ -26,6 +26,9 @@ public class Person {
     public int getId() {
         return id;
     }
+    protected void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -53,7 +56,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return  "ID : " + id +
+        return  "ID: " + id +
                 " |Name: " + name +
                 " | Gender: " + gender +
                 " | Birthday: " + birthdate +
