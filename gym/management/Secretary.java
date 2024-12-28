@@ -101,6 +101,8 @@ public class Secretary extends Person {
             default:
                 throw new IllegalArgumentException("Error: Unknown session type");
         }
+        LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        String formattedDate = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         Session session = new Session(
                 sessionType,
                 date,
@@ -110,7 +112,7 @@ public class Secretary extends Person {
                 price
         );
         sessions.add(session);
-        logAction("Created new session: " + sessionType + " on " + date + " with instructor " + instructor.getName());
+        logAction("Created new session: " + sessionType + " on " + formattedDate + " with instructor " + instructor.getName());
         return session;
     }
 
