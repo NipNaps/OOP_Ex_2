@@ -37,7 +37,7 @@ public class Gym {
     }
     public void setSecretary(Person person, double salary) {
         this.secretary = new Secretary(person, salary);
-        this.secretary.logAction("A new secretary has started working at the gym: " + this.name);
+        this.secretary.logAction("A new secretary has started working at the gym: " + secretary.getName());
     }
     public List<Client> getClients() {
         return clients;

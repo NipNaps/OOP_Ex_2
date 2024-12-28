@@ -9,7 +9,7 @@ public class Client extends Person  implements Observer {
 
     private List<String> notifications;
 
-    public Client(String name, double balance, Gender gender, String birthdate) {
+    public Client(String name, int balance, Gender gender, String birthdate) {
         super(name, balance, gender, birthdate);
         this.notifications = new ArrayList<>();
 

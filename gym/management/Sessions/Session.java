@@ -63,8 +63,8 @@ public class Session implements Subject {
         return type;
     }
 
-    public LocalDate getDateTime() {
-        return LocalDate.parse(this.dateTime, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+    public LocalDateTime getDateTime() {
+        return LocalDateTime.parse(this.dateTime, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 
     public ForumType getForum() {

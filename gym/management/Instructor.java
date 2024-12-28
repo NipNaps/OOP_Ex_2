@@ -8,20 +8,19 @@ import java.util.List;
 
 public class Instructor extends Person {
     private List<SessionType> qualifications;
-    private double salary;
-    private static final int WORKING_HOURS_PER_MONTH = 160; // Standard working hours per month
+    private int salary;
 
-    public Instructor(String name, double balance, Gender gender, String birthDate, double salary, List<SessionType> qualifications) {
+    public Instructor(String name, int balance, Gender gender, String birthDate, int salary, List<SessionType> qualifications) {
         super(name, balance, gender, birthDate);
         this.salary = salary;
         this.qualifications = qualifications;
     }
 
-    public double getSalary() {
+    public int getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 
@@ -45,10 +44,6 @@ public class Instructor extends Person {
         return qualifications.contains(sessionType);
     }
 
-    // Calculate salary per hour
-    public double getSalaryPerHour() {
-        return salary / WORKING_HOURS_PER_MONTH;
-    }
     public String toString() {
         return " | Name: " + getName() +
                 " | Gender: " + getGender() +

@@ -66,7 +66,7 @@ public class Secretary extends Person {
     }
 
     // Method that add instructors to the gym
-    public Instructor hireInstructor(Person person, double salaryPerHour, List<SessionType> certifications) {
+    public Instructor hireInstructor(Person person, int salaryPerHour, List<SessionType> certifications) {
         Instructor instructor = new Instructor(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate(), salaryPerHour, certifications);
         instructors.add(instructor);
         logAction("Hired new instructor: " + instructor.getName() + " with salary per hour: " + salaryPerHour);
@@ -118,7 +118,7 @@ public class Secretary extends Person {
 
         if (!clients.contains(client)) { throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons"); }
 
-        else if (session.getDateTime().isBefore(LocalDate.now()) || session.getDateTime().isEqual(LocalDate.now())) {
+        else if (session.getDateTime().isBefore(LocalDateTime.now()) || session.getDateTime().isEqual(LocalDateTime.now())) {
             logAction("Failed registration: Session is not in the future");
 
         } else if (session.getParticipants().size() >= session.getMaxCapacity()) {
@@ -163,9 +163,9 @@ public class Secretary extends Person {
 
 
     public void paySalaries() {
-        double totalSalary = 0;
+        int totalSalary = 0;
         for (Instructor instructor : instructors) {
-            totalSalary += instructor.getSalaryPerHour();
+            totalSalary += instructor.getSalary();
         }
         Gym.getInstance().updateBalance(-totalSalary);
         logAction("Salaries have been paid to all employees");

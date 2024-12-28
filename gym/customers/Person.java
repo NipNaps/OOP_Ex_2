@@ -9,12 +9,12 @@ public class Person {
     private int id; // Unique ID for each person
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private final String name;
-    private double balance;
+    private int balance;
     private final Gender gender;
     private final String birthdate;
 
     // Constructor
-    public Person(String name, double balance, Gender gender, String birthdate) {
+    public Person(String name, int balance, Gender gender, String birthdate) {
         this.id = idCounter++;
         this.name = name;
         this.balance = balance;
@@ -31,7 +31,7 @@ public class Person {
         return name;
     }
 
-    public double getBalance() {
+    public int getBalance() {
         return balance;
     }
 
