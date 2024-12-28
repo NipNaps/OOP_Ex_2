@@ -35,7 +35,7 @@ public class Gym {
     public Secretary getSecretary() {
         return secretary;
     }
-    public void setSecretary(Person person, double salary) {
+    public void setSecretary(Person person, int salary) {
         this.secretary = new Secretary(person, salary);
         this.secretary.logAction("A new secretary has started working at the gym: " + secretary.getName());
     }
@@ -56,21 +56,24 @@ public class Gym {
     public String toString() {
         String clientsData = "";
         for (Client client : getClients()) {
-            clientsData += client.toString() + "\n";
+            clientsData += client + "\n";
         }
         String employeesData = "";
-        employeesData += getSecretary() + "\n";
+
         for (Instructor instructor : getInstructors()) {
-            employeesData += instructor.toString() + "\n";
+            employeesData += instructor + "\n";
         }
+        employeesData += getSecretary() + "\n";
+
         String sessionsData = "";
         for (Session session : getSessions()) {
-            sessionsData += session.toString() + "\n";
+            sessionsData += session + "\n";
         }
         return "Gym Name " + name + "\n" +
                 "Gym Secretary " + secretary + "\n" +
                 "  Gym Balance: " + balance + "\n\n" +
-                "Clients: Data" +  clientsData.trim() + "\n" +
-                "Sessions Data" + sessionsData.trim();
+                "Clients Data:\n" +  clientsData.trim() + "\n\n" +
+                "Employees Data:\n" +  employeesData.trim() + "\n\n" +
+                "Sessions Data:\n" + sessionsData.trim();
     }
 }

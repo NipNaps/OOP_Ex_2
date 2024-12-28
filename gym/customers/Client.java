@@ -22,9 +22,14 @@ public class Client extends Person  implements Observer {
     public List<String> getNotifications() {
         return notifications;
     }
-
+@Override
     public String toString() {
-        return super.toString() + "\nNotifications: " + notifications;
-    }
+    return "ID: " + getId() +
+            " | Name: " + getName() +
+            " | Gender: " + getGender() +
+            " | Birthday: " + getBirthdate() +
+            " | Age: " + getAge() +
+            " | Balance: " + getBalance();
+}
 
 }

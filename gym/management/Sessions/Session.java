@@ -103,8 +103,7 @@ public class Session implements Subject {
                 " | Date: " + dateTime +
                 " | Forum: " + forum +
                 " | Instructor: " + instructor.getName() +
-                " | Participants: " + participants.size() + "/" + maxCapacity +
-                " | Price: " + price;
+                " | Participants: " + participants.size() + "/" + maxCapacity;
 
     }
 }

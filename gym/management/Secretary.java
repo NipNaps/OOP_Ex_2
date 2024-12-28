@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Secretary extends Person {
-    private double salary;
+    private int salary;
     private static List<String> actionHistory = new ArrayList<>();
     private List<Client> clients;
     private List<Instructor> instructors;
@@ -27,7 +27,7 @@ public class Secretary extends Person {
     private List<Client> observers;
 
     // Constructor
-    public Secretary(Person person, double salary) {
+    public Secretary(Person person, int salary) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
         this.salary = salary;
         this.clients = new ArrayList<>();
@@ -42,11 +42,11 @@ public class Secretary extends Person {
     // Method for client registration the gym
     public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
         if (person.getAge() < 18) {
-            throw new InvalidAgeException("Error: Client age must be at least 18 years old");
+            throw new InvalidAgeException("Error: Client age must be at least 18 years old to register");
         }
         for (Client client : Gym.getInstance().getClients()) {
             if (client.getName().equals(person.getName()) && client.getBirthdate().equals(person.getBirthdate())) {
-                throw new DuplicateClientException("Error: Client is already registered");
+                throw new DuplicateClientException("Error: The client is already registered");
             }
         }
         Client client = new Client(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
@@ -112,7 +112,7 @@ public class Secretary extends Person {
                 price
         );
         Gym.getInstance().getSessions().add(session);
-        logAction("Created new session: " + sessionType + " on " + formattedDate + " with instructor " + instructor.getName());
+        logAction("Created new session: " + sessionType + " on " + formattedDate + " with instructor: " + instructor.getName());
         return session;
     }
 
@@ -141,6 +141,8 @@ public class Secretary extends Person {
             if (!session.addParticipant(client)) { throw new DuplicateClientException("Error: The client is already registered for this lesson"); }
             logAction("Registered new client: " + client.getName() + " to session: " + session);
         }
+
+
     }
 
     public void notify(String message) {
@@ -165,11 +167,13 @@ public class Secretary extends Person {
 
 
     public void paySalaries() {
-        int totalSalary = 0;
-        for (Instructor instructor : instructors) {
-            totalSalary += instructor.getSalary();
-        }
-        Gym.getInstance().updateBalance(-totalSalary);
+        double totalInstructorSalaries =  Gym.getInstance().getInstructors().stream().mapToDouble(Instructor::getSalary).sum();
+         double totalSalaries = totalInstructorSalaries + getSalary();
+         Gym.getInstance().updateBalance(-totalSalaries);
+
+
+
+        Gym.getInstance().updateBalance(-totalSalaries);
         logAction("Salaries have been paid to all employees");
     }
 

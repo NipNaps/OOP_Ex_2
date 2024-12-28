@@ -45,10 +45,16 @@ public class Instructor extends Person {
     }
 
     public String toString() {
-        return " | Name: " + getName() +
+        String certifications = String.join(", ", getQualification().stream().map(Enum::name).toList());
+        return "ID: " + getId() +
+                " | Name: " + getName() +
                 " | Gender: " + getGender() +
                 " | Birthday: " + getBirthdate() +
                 " | Age: " + getAge() +
-                " | Balance : " + getBalance();
+                " | Balance : " + getBalance() +
+                " | Role: Instructor" +
+                " | Salary per Hour: " + getSalary() +
+                " | Certified Classes: " + certifications;
+
     }
 }
