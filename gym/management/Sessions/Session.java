@@ -18,9 +18,9 @@ public class Session implements Subject {
     private Instructor instructor;
     private List<Client> participants;
     private final int maxCapacity;
-    private final double price;
+    private final int price;
 
-    public Session(SessionType type, String dateTime, ForumType forum, Instructor instructor, int maxCapacity, double price) {
+    public Session(SessionType type, String dateTime, ForumType forum, Instructor instructor, int maxCapacity, int price) {
         if (maxCapacity <= 0) {
             throw new IllegalArgumentException("maxCapacity must be greater than 0");
         }
@@ -79,7 +79,7 @@ public class Session implements Subject {
         return maxCapacity;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 

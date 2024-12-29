@@ -78,7 +78,7 @@ public class Secretary extends Person {
             throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
         }
         int maxCapacity = 0;
-        double price;
+        int price;
         switch (sessionType) {
             case Pilates:
                 maxCapacity = 30;
@@ -116,28 +116,44 @@ public class Secretary extends Person {
 
     public void registerClientToLesson(Client client, Session session) throws DuplicateClientException, ClientNotRegisteredException {
 
-        if (!Gym.getInstance().getClients().contains(client)) { throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons"); }
+        if (!Gym.getInstance().getClients().contains(client)) {
+            throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons");
+        }
 
-        else if (session.getDateTime().isBefore(LocalDateTime.now()) || session.getDateTime().isEqual(LocalDateTime.now())) {
+        boolean flag = true;
+
+        if (session.getDateTime().isBefore(LocalDateTime.now()) || session.getDateTime().isEqual(LocalDateTime.now())) {
             logAction("Failed registration: Session is not in the future");
-
-        } else if (session.getParticipants().size() >= session.getMaxCapacity()) {
+            flag = false;
+        }
+        if (session.getParticipants().size() >= session.getMaxCapacity()) {
             logAction("Failed registration: No available spots for session");
-
-        } else if (client.getBalance() < session.getPrice()) {
+            flag = false;
+        }
+        if (session.getForum().equals(ForumType.Male) && (client.getGender() != Gender.Male)) {
+            logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
+            flag = false;
+        }
+        if (session.getForum().equals(ForumType.Female) && (client.getGender() != Gender.Female)) {
+            logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
+            flag = false;
+        }
+        if (client.getBalance() < session.getPrice()) {
             logAction("Failed registration: Client doesn't have enough balance");
-
-        } else if (session.getForum().equals(ForumType.Male) && (client.getGender() != Gender.Male)) {
-                logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
-
-        } else if (session.getForum().equals(ForumType.Female) && (client.getGender() != Gender.Female)) {
-                logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
-
-        } else if (session.getForum().equals(ForumType.Seniors) && (client.getAge() < 65)) {
+            flag = false;
+        }
+        double sessionPrice = session.getPrice();
+        client.setBalance(client.getBalance() - session.getPrice());
+        Gym.getInstance().updateBalance(+sessionPrice);
+        if (session.getForum().equals(ForumType.Seniors) && (client.getAge() < 65)) {
             logAction("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
-        } else {
-            if (!session.addParticipant(client)) { throw new DuplicateClientException("Error: The client is already registered for this lesson"); }
-            logAction("Registered new client: " + client.getName() + " to session: " + session);
+            flag = false;
+        }
+        if (flag) {
+            if (!session.addParticipant(client)) {
+                throw new DuplicateClientException("Error: The client is already registered for this lesson");
+            }
+            logAction("Registered client: " + client.getName() + " to session: " + session.getType() + " on " + session.getDateTime() + " for price: " + session.getPrice());
         }
 
 // test test
@@ -156,6 +172,7 @@ public class Secretary extends Person {
         }
         logAction("Notified all client with date : [" + date + "] " + message);
     }
+
     public void notify(Session session, String message) {
         for (Client client : session.getParticipants()) {
             client.update(message);
