@@ -21,9 +21,9 @@ public class Session implements Subject {
     private final int price;
 
     public Session(SessionType type, String dateTime, ForumType forum, Instructor instructor, int maxCapacity, int price) {
-        if (maxCapacity <= 0) {
+        if (maxCapacity <= 0) { // maxCapacity of a session must be greater than 0 for it to be created
             throw new IllegalArgumentException("maxCapacity must be greater than 0");
-        }
+        } // Throwing an exception when trying to set a price that's lower than 0
         if (price < 0) {
             throw new IllegalArgumentException("price must be greater than 0");
         }
@@ -91,6 +91,7 @@ public class Session implements Subject {
         return participants;
     }
 
+// Adding participants and making sure that we don't pass the max capacity for each one.
     public boolean addParticipant(Client client) {
         if (participants.size() >= maxCapacity) {
             System.out.println("Error: No avaiable spots for this session");

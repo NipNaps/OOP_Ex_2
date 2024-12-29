@@ -22,7 +22,7 @@ public class Gym {
         this.instructors = new ArrayList<>();
         this.balance = 0; // Default gym balance.
     }
-
+// Singleton Gym
     public static Gym getInstance() {
         if (instance == null) {
             instance = new Gym();

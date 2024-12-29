@@ -1,7 +1,6 @@
 package gym.customers;
 
 import gym.management.Observer;
-import gym.management.Sessions.Session;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +29,7 @@ public class Client extends Person implements Observer {
         notifications.add(message);
     }
 
+    // Client using observer to receive messages.
     public List<String> getNotifications() {
         return notifications;
     }

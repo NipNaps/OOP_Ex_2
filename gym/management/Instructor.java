@@ -18,7 +18,7 @@ public class Instructor extends Person {
         this.salaryPerHour = salary;
         this.qualifications = qualifications;
     }
-
+// using this method to calculate the payment for the instructor
     public void addSession() {
         sessionsNum++;
     }
@@ -39,11 +39,11 @@ public class Instructor extends Person {
     public int getSalary() {
         return salaryPerHour * sessionsNum;
     }
-
+// Method that gets what type of sessions the instructor is qualified to do
     public List<SessionType> getQualification() {
         return qualifications;
     }
-
+// Checking if the instructor is qualified
     public boolean isCertified(SessionType sessionType) {
         return qualifications.contains(sessionType);
     }

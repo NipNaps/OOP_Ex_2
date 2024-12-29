@@ -13,7 +13,6 @@ import gym.management.Sessions.SessionType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +38,10 @@ public class Secretary extends Person {
 
     // Method for client registration the gym
     public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
-        if (person.getAge() < 18) {
+        if (person.getAge() < 18) { // Person must be at least 18 to join the gym.
             throw new InvalidAgeException("Error: Client must be at least 18 years old to register");
         }
+        // Throwing an exception when trying to register the same client twice , checking if they have the same name and birthday.
         for (Client client : Gym.getInstance().getClients()) {
             if (client.getName().equals(person.getName()) && client.getBirthdate().equals(person.getBirthdate())) {
                 throw new DuplicateClientException("Error: The client is already registered");
@@ -54,7 +54,7 @@ public class Secretary extends Person {
 
     }
 
-    // Method that removes client from the gym
+    // Method that unregisters the client from the gym.
     public void unregisterClient(Client client) throws ClientNotRegisteredException {
         if (!Gym.getInstance().getClients().contains(client)) {
             throw new ClientNotRegisteredException("Error: Registration is required before attempting to unregister");
@@ -63,7 +63,7 @@ public class Secretary extends Person {
         logAction("Unregistered client: " + client.getName());
     }
 
-    // Method that add instructors to the gym
+    // Method for hiring the person to start being an instructor at the gym.
     public Instructor hireInstructor(Person person, int salaryPerHour, List<SessionType> certifications) {
         Instructor instructor = new Instructor(person, salaryPerHour, certifications);
         Gym.getInstance().getInstructors().add(instructor);
@@ -71,7 +71,7 @@ public class Secretary extends Person {
         return instructor;
     }
 
-    // Method that add sessions to the gym
+    // Method that adds sessions to the gym
     public Session addSession(SessionType sessionType, String date, ForumType forum, Instructor instructor)
             throws InstructorNotQualifiedException {
         if (!instructor.isCertified(sessionType)) {
@@ -96,9 +96,9 @@ public class Secretary extends Person {
                 maxCapacity = 5;
                 price = 150;
                 break;
-            default:
+            default: // Throwing an exception when trying to enter a session type that doesn't exist.
                 throw new IllegalArgumentException("Error: Unknown session type");
-        }
+        } // Changing the format of the date from dd-mm-yyyy to yyyy-mm-dd
         LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
         String formattedDate = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         Session session = new Session(
@@ -114,7 +114,7 @@ public class Secretary extends Person {
         logAction("Created new session: " + sessionType + " on " + formattedDate + " with instructor: " + instructor.getName());
         return session;
     }
-
+// Method for registering client to Sessions
     public void registerClientToLesson(Client client, Session session) throws DuplicateClientException, ClientNotRegisteredException {
 
         if (!Gym.getInstance().getClients().contains(client)) {
@@ -159,7 +159,7 @@ public class Secretary extends Person {
         }
 
     }
-
+// Observer implementations notifying clients.
     public void notify(Session session, String message) {
         for (Client client : session.getParticipants()) {
             client.update(message);
@@ -184,7 +184,7 @@ public class Secretary extends Person {
         logAction("A message was sent to all gym clients: " + message);
     }
 
-
+// Method for paying the salaries to manage the Balance of the gym and the employees.
     public void paySalaries() {
         double totalInstructorSalaries = Gym.getInstance().getInstructors().stream().mapToDouble(Instructor::getSalary).sum();
         double totalSalaries = totalInstructorSalaries + getSalary();
@@ -194,7 +194,7 @@ public class Secretary extends Person {
         }
         logAction("Salaries have been paid to all employees");
     }
-
+// Logging the actions
     public static void logAction(String action) {
         actionHistory.add(action);
     }
