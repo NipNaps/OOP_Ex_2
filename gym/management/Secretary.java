@@ -198,7 +198,7 @@ public class Secretary extends Person {
     public static void logAction(String action) {
         actionHistory.add(action);
     }
-
+//  ss
     public void printActions() {
         for (String action : actionHistory) {
             System.out.println(action);

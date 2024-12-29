@@ -47,7 +47,7 @@ public class Instructor extends Person {
     public boolean isCertified(SessionType sessionType) {
         return qualifications.contains(sessionType);
     }
-
+// ssss
     public String toString() {
         String certifications = String.join(", ", getQualification().stream().map(Enum::name).toList());
         return "ID: " + getId() +
