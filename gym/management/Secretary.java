@@ -77,7 +77,7 @@ public class Secretary extends Person {
         if (!instructor.isCertified(sessionType)) {
             throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
         }
-        int maxCapacity = 0;
+        int maxCapacity;
         int price;
         switch (sessionType) {
             case Pilates:
@@ -189,6 +189,9 @@ public class Secretary extends Person {
         double totalInstructorSalaries = Gym.getInstance().getInstructors().stream().mapToDouble(Instructor::getSalary).sum();
         double totalSalaries = totalInstructorSalaries + getSalary();
         Gym.getInstance().updateBalance(-totalSalaries);
+        for (Instructor instructor : Gym.getInstance().getInstructors()) {
+            instructor.paySalary();
+        }
         logAction("Salaries have been paid to all employees");
     }
 

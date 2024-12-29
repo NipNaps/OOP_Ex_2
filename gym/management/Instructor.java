@@ -27,6 +27,10 @@ public class Instructor extends Person {
         return salaryPerHour;
     }
 
+    public void paySalary() {
+        balance += getSalary();
+    }
+
     public int getSalary() {
         return salaryPerHour * sessionsNum;
     }

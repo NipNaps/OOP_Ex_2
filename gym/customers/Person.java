@@ -1,5 +1,7 @@
 package gym.customers;
 
+import gym.management.Gym;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +12,7 @@ public class Person {
     private int id; // Unique ID for each person
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private final String name;
-    private int balance;
+    protected int balance;
     private final Gender gender;
     private final String birthdate;
 
@@ -40,9 +42,6 @@ public class Person {
         return balance;
     }
 
-    public void setBalance(int balance) {
-        this.balance = balance;
-    }
 
     public Gender getGender() {
         return gender;

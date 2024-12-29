@@ -9,14 +9,13 @@ import java.util.List;
 
 public class Client extends Person implements Observer {
 
-    private List<String> notifications;
-    private List<LocalDate> sessionsDate = new ArrayList<>();
+    private final List<String> notifications;
+    private final List<LocalDate> sessionsDate = new ArrayList<>();
 
     public Client(Person person) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
         this.setId(person.getId());
         this.notifications = new ArrayList<>();
-
     }
 
     public void addSessionDate(LocalDate date) {
