@@ -5,10 +5,13 @@ import gym.management.Gym;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Person {
 
     private static int idCounter = 1111; //Starting ID
+    protected static List<Person> people = new ArrayList<>();
     private int id; // Unique ID for each person
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private final String name;
@@ -23,6 +26,7 @@ public class Person {
         this.balance = balance;
         this.gender = gender;
         this.birthdate = birthdate;
+        people.add(this);
     }
 
     // getters
@@ -43,7 +47,11 @@ public class Person {
     }
 
     public void setBalance(int balance) {
-        this.balance = balance;
+        for (Person p : people) {
+            if (p.getName().equals(this.getName())) {
+                p.balance = balance;
+            }
+        }
     }
 
     public Gender getGender() {
@@ -57,6 +65,10 @@ public class Person {
     public int getAge() {
         LocalDate birthDate = LocalDate.parse(this.birthdate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         return Period.between(birthDate, LocalDate.now()).getYears();
+    }
+
+    private static void personList(Person person) {
+        people.add(person);
     }
 
     @Override

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Secretary extends Person {
-    private int salary;
-    private static List<String> actionHistory = new ArrayList<>();
+    private final int salary;
+    private static final List<String> actionHistory = new ArrayList<>();
     private List<Client> clients;
     private List<Instructor> instructors;
     private List<Session> sessions;

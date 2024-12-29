@@ -28,7 +28,11 @@ public class Instructor extends Person {
     }
 
     public void paySalary() {
-        balance += getSalary();
+        for (Person p: people) {
+            if (this.getName().equals(p.getName())) {
+                p.setBalance(this.getSalary());
+            }
+        }
     }
 
     public int getSalary() {

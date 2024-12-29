@@ -80,7 +80,7 @@ public class Gym {
         }
         return "Gym Name: " + name + "\n" +
                 "Gym Secretary: " + secretary + "\n" +
-                "Gym Balance: " + balance + "\n\n" +
+                "Gym Balance: " + (int)balance + "\n\n" +
                 "Clients Data:\n" + clientsData.toString().trim() + "\n\n" +
                 "Employees Data:\n" + employeesData.toString().trim() + "\n\n" +
                 "Sessions Data:\n" + sessionsData.toString().trim();
