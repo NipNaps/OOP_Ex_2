@@ -11,7 +11,7 @@ public class Gym {
     private static Gym instance;
     private String name;
     private Secretary secretary;
-    private static double balance;
+    private  double balance;
     private final List<Client> clients;
     private final List<Instructor> instructors;
     private final List<Session> sessions;
@@ -20,7 +20,7 @@ public class Gym {
         this.clients = new ArrayList<>();
         this.sessions = new ArrayList<>();
         this.instructors = new ArrayList<>();
-        balance = 0; // Default gym balance.
+        this.balance = 0; // Default gym balance.
     }
 
     public static Gym getInstance() {
@@ -58,7 +58,7 @@ public class Gym {
         return sessions;
     }
 
-    public static void updateBalance(double amount) {
+    public void updateBalance(double amount) {
         balance += amount;
     }
 

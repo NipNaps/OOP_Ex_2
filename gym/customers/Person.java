@@ -1,4 +1,5 @@
 package gym.customers;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +27,7 @@ public class Person {
     public int getId() {
         return id;
     }
+
     protected void setId(int id) {
         this.id = id;
     }
@@ -37,6 +39,7 @@ public class Person {
     public int getBalance() {
         return balance;
     }
+
     public void setBalance(int balance) {
         this.balance = balance;
     }
@@ -56,7 +59,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return  "ID: " + id +
+        return "ID: " + id +
                 " | Name: " + name +
                 " | Gender: " + gender +
                 " | Birthday: " + birthdate +

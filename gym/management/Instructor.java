@@ -2,43 +2,37 @@ package gym.management;
 
 import gym.customers.Gender;
 import gym.customers.Person;
+import gym.management.Sessions.Session;
 import gym.management.Sessions.SessionType;
 
 import java.util.List;
 
 public class Instructor extends Person {
-    private List<SessionType> qualifications;
-    private int salary;
+    private final List<SessionType> qualifications;
+    private int sessionsNum = 0;
+    private int salaryPerHour;
 
     public Instructor(Person person, int salary, List<SessionType> qualifications) {
         super(person.getName(), person.getBalance(), person.getGender(), person.getBirthdate());
         this.setId(person.getId());
-        this.salary = salary;
+        this.salaryPerHour = salary;
         this.qualifications = qualifications;
     }
 
-    public int getSalary() {
-        return salary;
+    public void addSession() {
+        sessionsNum++;
     }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public int getSalaryPerHour() {
+        return salaryPerHour;
+    }
+
+    public int getSalary() {
+        return salaryPerHour * sessionsNum;
     }
 
     public List<SessionType> getQualification() {
         return qualifications;
-    }
-
-    // Add a new qualification
-    public void addQualification(SessionType qualification) {
-        if (!qualifications.contains(qualification)) {
-            qualifications.add(qualification);
-        }
-    }
-
-    // Remove a qualification
-    public void removeQualification(SessionType qualification) {
-        qualifications.remove(qualification);
     }
 
     public boolean isCertified(SessionType sessionType) {
@@ -54,7 +48,7 @@ public class Instructor extends Person {
                 " | Age: " + getAge() +
                 " | Balance : " + getBalance() +
                 " | Role: Instructor" +
-                " | Salary per Hour: " + getSalary() +
+                " | Salary per Hour: " + getSalaryPerHour() +
                 " | Certified Classes: " + certifications;
 
     }

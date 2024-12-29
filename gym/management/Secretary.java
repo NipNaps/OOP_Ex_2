@@ -110,6 +110,7 @@ public class Secretary extends Person {
                 price
         );
         Gym.getInstance().getSessions().add(session);
+        instructor.addSession();
         logAction("Created new session: " + sessionType + " on " + formattedDate + " with instructor: " + instructor.getName());
         return session;
     }

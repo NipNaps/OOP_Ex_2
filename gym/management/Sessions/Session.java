@@ -71,10 +71,6 @@ public class Session implements Subject {
         return getDateTime().toLocalDate();
     }
 
-//    public boolean sessionInDate(String date, Client client) {
-//        boolean result = false;
-//    }
-
     public ForumType getForum() {
         return forum;
     }
