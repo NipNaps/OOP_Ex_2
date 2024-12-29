@@ -7,7 +7,6 @@ import gym.Exception.InvalidAgeException;
 import gym.customers.Client;
 import gym.customers.Gender;
 import gym.customers.Person;
-import gym.management.Sessions.PilatesSession;
 import gym.management.Sessions.Session;
 import gym.management.Sessions.ForumType;
 import gym.management.Sessions.SessionType;
@@ -78,16 +77,12 @@ public class Secretary extends Person {
         if (!instructor.isCertified(sessionType)) {
             throw new InstructorNotQualifiedException("Error: Instructor is not qualified to conduct this session type.");
         }
-        LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
-        String formattedDate = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
         int maxCapacity;
         int price;
-        Session session;
         switch (sessionType) {
             case Pilates:
                 maxCapacity = 30;
                 price = 60;
-                session = new PilatesSession(date, forum, instructor, maxCapacity,price);
                 break;
             case MachinePilates:
                 maxCapacity = 10;
@@ -104,7 +99,16 @@ public class Secretary extends Person {
             default:
                 throw new IllegalArgumentException("Error: Unknown session type");
         }
-        
+        LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        String formattedDate = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+        Session session = new Session(
+                sessionType,
+                date,
+                forum,
+                instructor,
+                maxCapacity,
+                price
+        );
         Gym.getInstance().getSessions().add(session);
         instructor.addSession();
         logAction("Created new session: " + sessionType + " on " + formattedDate + " with instructor: " + instructor.getName());
