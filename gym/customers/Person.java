@@ -42,6 +42,9 @@ public class Person {
         return balance;
     }
 
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
 
     public Gender getGender() {
         return gender;
