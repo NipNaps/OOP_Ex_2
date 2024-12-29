@@ -2,7 +2,6 @@ package gym.management.Sessions;
 
 import gym.customers.Client;
 import gym.management.Instructor;
-import gym.management.Subject;
 
 
 import java.time.LocalDate;
@@ -11,15 +10,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Session implements Subject {
-    private SessionType type;
-    private String dateTime;
+public class Session {
+    private final SessionType type;
+    private final String dateTime;
     private final ForumType forum;
-    private Instructor instructor;
-    private List<Client> participants;
+    private final Instructor instructor;
+    private final List<Client> participants;
     private final int maxCapacity;
     private final int price;
 
+    // Constructor
     public Session(SessionType type, String dateTime, ForumType forum, Instructor instructor, int maxCapacity, int price) {
         if (maxCapacity <= 0) { // maxCapacity of a session must be greater than 0 for it to be created
             throw new IllegalArgumentException("maxCapacity must be greater than 0");
@@ -37,36 +37,16 @@ public class Session implements Subject {
         this.participants = new ArrayList<>();
     }
 
-    @Override
-    public void attach(Client client) {
-        if (!participants.contains(client)) {
-            participants.add(client);
-        }
-    }
-
-    @Override
-    public void detach(Client client) {
-        participants.remove(client);
-    }
-
-    @Override
-    public void notifyObservers(String message) {
-        if (!participants.isEmpty()) {
-            System.out.println("No participants to notify for session: " + type);
-        }
-        for (Client client : participants) {
-            client.update(message);
-        }
-    }
-
     public SessionType getType() {
         return type;
     }
 
+    // Get date + time of ssession
     public LocalDateTime getDateTime() {
         return LocalDateTime.parse(this.dateTime, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 
+    // Get date of session
     public LocalDate getDate() {
         return getDateTime().toLocalDate();
     }

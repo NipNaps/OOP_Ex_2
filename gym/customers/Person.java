@@ -46,6 +46,7 @@ public class Person {
         return balance;
     }
 
+    // set the balance of people, the for loop is for sync between clients-instructors-secretary-person
     public void setBalance(int balance) {
         for (Person p : people) {
             if (p.getName().equals(this.getName())) {
@@ -62,14 +63,12 @@ public class Person {
         return birthdate;
     }
 
+    // Method that calculae age
     public int getAge() {
         LocalDate birthDate = LocalDate.parse(this.birthdate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
-    private static void personList(Person person) {
-        people.add(person);
-    }
 
     @Override
     public String toString() {
