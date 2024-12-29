@@ -40,7 +40,7 @@ public class Secretary extends Person {
     // Method for client registration the gym
     public Client registerClient(Person person) throws InvalidAgeException, DuplicateClientException {
         if (person.getAge() < 18) {
-            throw new InvalidAgeException("Error: Client age must be at least 18 years old to register");
+            throw new InvalidAgeException("Error: Client must be at least 18 years old to register");
         }
         for (Client client : Gym.getInstance().getClients()) {
             if (client.getName().equals(person.getName()) && client.getBirthdate().equals(person.getBirthdate())) {
@@ -206,7 +206,7 @@ public class Secretary extends Person {
     }
 
     public String toString() {
-        return super.toString() + " | Role: Secretary | Salary per month: " + salary;
+        return super.toString() + " | Role: Secretary | Salary per Month: " + salary;
     }
 }
 

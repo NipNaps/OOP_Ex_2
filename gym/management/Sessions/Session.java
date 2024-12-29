@@ -104,7 +104,7 @@ public class Session implements Subject {
     }
 
     public String toString() {
-        return "Session type: " + type +
+        return "Session Type: " + type +
                 " | Date: " + dateTime +
                 " | Forum: " + forum +
                 " | Instructor: " + instructor.getName() +
