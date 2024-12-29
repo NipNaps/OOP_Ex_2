@@ -55,7 +55,7 @@ public class Instructor extends Person {
                 " | Gender: " + getGender() +
                 " | Birthday: " + getBirthdate() +
                 " | Age: " + getAge() +
-                " | Balance : " + getBalance() +
+                " | Balance: " + getBalance() +
                 " | Role: Instructor" +
                 " | Salary per Hour: " + getSalaryPerHour() +
                 " | Certified Classes: " + certifications;
