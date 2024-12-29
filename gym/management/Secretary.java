@@ -156,7 +156,13 @@ public class Secretary extends Person {
             logAction("Registered client: " + client.getName() + " to session: " + session.getType() + " on " + session.getDateTime() + " for price: " + session.getPrice());
         }
 
-// test test
+    }
+
+    public void notify(Session session, String message) {
+        for (Client client : session.getParticipants()) {
+            client.update(message);
+        }
+        logAction("A message was sent to participants of session: " + session.getType() + " - " + message);
     }
 
     public void notify(String message) {
@@ -173,19 +179,11 @@ public class Secretary extends Person {
         logAction("Notified all client with date : [" + date + "] " + message);
     }
 
-    public void notify(Session session, String message) {
-        for (Client client : session.getParticipants()) {
-            client.update(message);
-        }
-        logAction("A message was sent to participants of session: " + session.getType() + " - " + message);
-    }
-
 
     public void paySalaries() {
-        double totalInstructorSalaries =  Gym.getInstance().getInstructors().stream().mapToDouble(Instructor::getSalary).sum();
-         double totalSalaries = totalInstructorSalaries + getSalary();
-         Gym.getInstance().updateBalance(-totalSalaries);
-
+        double totalInstructorSalaries = Gym.getInstance().getInstructors().stream().mapToDouble(Instructor::getSalary).sum();
+        double totalSalaries = totalInstructorSalaries + getSalary();
+        Gym.getInstance().updateBalance(-totalSalaries);
 
 
         Gym.getInstance().updateBalance(-totalSalaries);
