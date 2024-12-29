@@ -39,7 +39,7 @@ public class Session implements Subject {
 
     @Override
     public void attach(Client client) {
-        if(!participants.contains(client)) {
+        if (!participants.contains(client)) {
             participants.add(client);
         }
     }
@@ -51,10 +51,10 @@ public class Session implements Subject {
 
     @Override
     public void notifyObservers(String message) {
-        if(!participants.isEmpty()) {
+        if (!participants.isEmpty()) {
             System.out.println("No participants to notify for session: " + type);
         }
-        for(Client client : participants) {
+        for (Client client : participants) {
             client.update(message);
         }
     }
@@ -98,6 +98,7 @@ public class Session implements Subject {
         participants.add(client);
         return true;
     }
+
     public String toString() {
         return "Session type: " + type +
                 " | Date: " + dateTime +
