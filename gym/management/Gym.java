@@ -11,17 +11,18 @@ public class Gym {
     private static Gym instance;
     private String name;
     private Secretary secretary;
-    private double balance;
-    private List<Client> clients;
-    private List <Instructor> instructors;
-    private List<Session> sessions;
+    private static double balance;
+    private final List<Client> clients;
+    private final List<Instructor> instructors;
+    private final List<Session> sessions;
 
     private Gym() {
         this.clients = new ArrayList<>();
         this.sessions = new ArrayList<>();
         this.instructors = new ArrayList<>();
-        this.balance = 0; // Default gym balance.
+        balance = 0; // Default gym balance.
     }
+
     public static Gym getInstance() {
         if (instance == null) {
             instance = new Gym();
@@ -32,19 +33,23 @@ public class Gym {
     public void setName(String name) {
         this.name = name;
     }
+
     public Secretary getSecretary() {
         if (secretary == null) {
             throw new IllegalArgumentException("Error: secretary has not been set");
         }
         return secretary;
     }
+
     public void setSecretary(Person person, int salary) {
         this.secretary = new Secretary(person, salary);
         Secretary.logAction("A new secretary has started working at the gym: " + secretary.getName());
     }
+
     public List<Client> getClients() {
         return clients;
     }
+
     public List<Instructor> getInstructors() {
         return instructors;
     }
@@ -53,30 +58,31 @@ public class Gym {
         return sessions;
     }
 
-    public void updateBalance(double amount) {
-        this.balance += amount;
+    public static void updateBalance(double amount) {
+        balance += amount;
     }
+
     public String toString() {
-        String clientsData = "";
+        StringBuilder clientsData = new StringBuilder();
         for (Client client : getClients()) {
-            clientsData += client + "\n";
+            clientsData.append(client).append("\n");
         }
-        String employeesData = "";
+        StringBuilder employeesData = new StringBuilder();
 
         for (Instructor instructor : getInstructors()) {
-            employeesData += instructor + "\n";
+            employeesData.append(instructor).append("\n");
         }
-        employeesData += getSecretary() + "\n";
+        employeesData.append(getSecretary()).append("\n");
 
-        String sessionsData = "";
+        StringBuilder sessionsData = new StringBuilder();
         for (Session session : getSessions()) {
-            sessionsData += session + "\n";
+            sessionsData.append(session).append("\n");
         }
         return "Gym Name: " + name + "\n" +
                 "Gym Secretary: " + secretary + "\n" +
                 "Gym Balance: " + balance + "\n\n" +
-                "Clients Data:\n" +  clientsData.trim() + "\n\n" +
-                "Employees Data:\n" +  employeesData.trim() + "\n\n" +
-                "Sessions Data:\n" + sessionsData.trim();
+                "Clients Data:\n" + clientsData.toString().trim() + "\n\n" +
+                "Employees Data:\n" + employeesData.toString().trim() + "\n\n" +
+                "Sessions Data:\n" + sessionsData.toString().trim();
     }
 }
