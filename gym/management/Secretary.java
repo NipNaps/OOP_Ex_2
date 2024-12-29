@@ -137,7 +137,7 @@ public class Secretary extends Person {
             logAction("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
         } else {
             if (!session.addParticipant(client)) { throw new DuplicateClientException("Error: The client is already registered for this lesson"); }
-            logAction("Registered new client: " + client.getName() + " to session: " + session);
+            logAction("Registered client: " + client.getName() + " to session: " + session.getType());
         }
 
 
