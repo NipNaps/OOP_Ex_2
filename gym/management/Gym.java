@@ -40,7 +40,7 @@ public class Gym {
     }
     public void setSecretary(Person person, int salary) {
         this.secretary = new Secretary(person, salary);
-        this.secretary.logAction("A new secretary has started working at the gym: " + secretary.getName());
+        Secretary.logAction("A new secretary has started working at the gym: " + secretary.getName());
     }
     public List<Client> getClients() {
         return clients;
@@ -72,7 +72,7 @@ public class Gym {
         for (Session session : getSessions()) {
             sessionsData += session + "\n";
         }
-        return "Gym Name " + name + "\n" +
+        return "Gym Name: " + name + "\n" +
                 "Gym Secretary: " + secretary + "\n" +
                 "Gym Balance: " + balance + "\n\n" +
                 "Clients Data:\n" +  clientsData.trim() + "\n\n" +

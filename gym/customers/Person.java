@@ -57,9 +57,10 @@ public class Person {
     @Override
     public String toString() {
         return  "ID: " + id +
-                " |Name: " + name +
+                " | Name: " + name +
                 " | Gender: " + gender +
                 " | Birthday: " + birthdate +
+                " | Age: " + getAge() +
                 " | Balance: " + balance;
     }
 

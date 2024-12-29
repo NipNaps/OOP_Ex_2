@@ -67,6 +67,14 @@ public class Session implements Subject {
         return LocalDateTime.parse(this.dateTime, DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
     }
 
+    public LocalDate getDate() {
+        return getDateTime().toLocalDate();
+    }
+
+//    public boolean sessionInDate(String date, Client client) {
+//        boolean result = false;
+//    }
+
     public ForumType getForum() {
         return forum;
     }

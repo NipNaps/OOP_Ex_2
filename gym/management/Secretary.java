@@ -142,9 +142,6 @@ public class Secretary extends Person {
             logAction("Failed registration: Client doesn't have enough balance");
             flag = false;
         }
-        double sessionPrice = session.getPrice();
-        client.setBalance(client.getBalance() - session.getPrice());
-        Gym.getInstance().updateBalance(+sessionPrice);
         if (session.getForum().equals(ForumType.Seniors) && (client.getAge() < 65)) {
             logAction("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
             flag = false;
@@ -153,6 +150,10 @@ public class Secretary extends Person {
             if (!session.addParticipant(client)) {
                 throw new DuplicateClientException("Error: The client is already registered for this lesson");
             }
+            client.addSessionDate(session.getDate());
+            double sessionPrice = session.getPrice();
+            client.setBalance(client.getBalance() - session.getPrice());
+            Gym.getInstance().updateBalance(+sessionPrice);
             logAction("Registered client: " + client.getName() + " to session: " + session.getType() + " on " + session.getDateTime() + " for price: " + session.getPrice());
         }
 
@@ -162,7 +163,17 @@ public class Secretary extends Person {
         for (Client client : session.getParticipants()) {
             client.update(message);
         }
-        logAction("A message was sent to participants of session: " + session.getType() + " - " + message);
+        logAction("A message was sent to everyone registered for session " + session.getType() + " on " + session.getDateTime() + " : " + message);
+    }
+
+    public void notify(String date, String message) {
+        LocalDate rDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        for (Client client : Gym.getInstance().getClients()) {
+            if (client.getSessionsDate().contains(rDate))
+                client.update(message);
+        }
+        String curDate = rDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        logAction("A message was sent to everyone registered for a session on " + curDate + " : " + message);
     }
 
     public void notify(String message) {
@@ -172,20 +183,10 @@ public class Secretary extends Person {
         logAction("A message was sent to all gym clients: " + message);
     }
 
-    public void notify(String date, String message) {
-        for (Client client : Gym.getInstance().getClients()) {
-            client.update("[" + date + "] " + message);
-        }
-        logAction("Notified all client with date : [" + date + "] " + message);
-    }
-
 
     public void paySalaries() {
         double totalInstructorSalaries = Gym.getInstance().getInstructors().stream().mapToDouble(Instructor::getSalary).sum();
         double totalSalaries = totalInstructorSalaries + getSalary();
-        Gym.getInstance().updateBalance(-totalSalaries);
-
-
         Gym.getInstance().updateBalance(-totalSalaries);
         logAction("Salaries have been paid to all employees");
     }
