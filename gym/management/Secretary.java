@@ -140,7 +140,7 @@ public class Secretary extends Person {
             logAction("Registered new client: " + client.getName() + " to session: " + session);
         }
 
-
+// test test
     }
 
     public void notify(String message) {
