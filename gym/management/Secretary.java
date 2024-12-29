@@ -116,27 +116,39 @@ public class Secretary extends Person {
 
     public void registerClientToLesson(Client client, Session session) throws DuplicateClientException, ClientNotRegisteredException {
 
-        if (!Gym.getInstance().getClients().contains(client)) { throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons"); }
+        boolean flag = true;
 
-        else if (session.getDateTime().isBefore(LocalDateTime.now()) || session.getDateTime().isEqual(LocalDateTime.now())) {
+        if (!Gym.getInstance().getClients().contains(client)) {
+            throw new ClientNotRegisteredException("Error: The client is not registered with the gym and cannot enroll in lessons");
+        }
+        if (session.getDateTime().isBefore(LocalDateTime.now()) || session.getDateTime().isEqual(LocalDateTime.now())) {
             logAction("Failed registration: Session is not in the future");
-
-        } else if (session.getParticipants().size() >= session.getMaxCapacity()) {
+            flag = false;
+        }
+        if (session.getParticipants().size() >= session.getMaxCapacity()) {
             logAction("Failed registration: No available spots for session");
-
-        } else if (client.getBalance() < session.getPrice()) {
+            flag = false;
+        }
+        if (session.getForum().equals(ForumType.Male) && (client.getGender() != Gender.Male)) {
+            logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
+            flag = false;
+        }
+        if (session.getForum().equals(ForumType.Female) && (client.getGender() != Gender.Female)) {
+            logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
+            flag = false;
+        }
+        if (client.getBalance() < session.getPrice()) {
             logAction("Failed registration: Client doesn't have enough balance");
-
-        } else if (session.getForum().equals(ForumType.Male) && (client.getGender() != Gender.Male)) {
-                logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
-
-        } else if (session.getForum().equals(ForumType.Female) && (client.getGender() != Gender.Female)) {
-                logAction("Failed registration: Client's gender doesn't match the session's gender requirements");
-
-        } else if (session.getForum().equals(ForumType.Seniors) && (client.getAge() < 65)) {
+            flag = false;
+        }
+        if (session.getForum().equals(ForumType.Seniors) && (client.getAge() < 65)) {
             logAction("Failed registration: Client doesn't meet the age requirements for this session (Seniors)");
-        } else {
-            if (!session.addParticipant(client)) { throw new DuplicateClientException("Error: The client is already registered for this lesson"); }
+            flag = false;
+        }
+        if (flag) {
+            if (!session.addParticipant(client)) {
+                throw new DuplicateClientException("Error: The client is already registered for this lesson");
+            }
             logAction("Registered client: " + client.getName() + " to session: " + session.getType());
         }
 
@@ -156,6 +168,7 @@ public class Secretary extends Person {
         }
         logAction("Notified all client with date : [" + date + "] " + message);
     }
+
     public void notify(Session session, String message) {
         for (Client client : session.getParticipants()) {
             client.update(message);
@@ -165,10 +178,9 @@ public class Secretary extends Person {
 
 
     public void paySalaries() {
-        double totalInstructorSalaries =  Gym.getInstance().getInstructors().stream().mapToDouble(Instructor::getSalary).sum();
-         double totalSalaries = totalInstructorSalaries + getSalary();
-         Gym.getInstance().updateBalance(-totalSalaries);
-
+        double totalInstructorSalaries = Gym.getInstance().getInstructors().stream().mapToDouble(Instructor::getSalary).sum();
+        double totalSalaries = totalInstructorSalaries + getSalary();
+        Gym.getInstance().updateBalance(-totalSalaries);
 
 
         Gym.getInstance().updateBalance(-totalSalaries);
